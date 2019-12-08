@@ -1,21 +1,42 @@
 import * as vscode from "vscode";
-import { SwaggerTreeItem } from "../swagger/TreeItem";
-
+import Axios from "axios";
+import { Logger } from "../utils/Logger";
 export interface IConfigUrl {
 	projectName: string;
-	url: string;
+	url: vscode.Uri;
 	label: string;
 	local: boolean;
-	projectFolder?: string;
+	projectFolder?: vscode.WorkspaceFolder;
+	config: Partial<IConfig>;
 }
 
-export class Config {
-	getChildren(): SwaggerTreeItem[] {
-		return [];
-	}
-	public sources: IConfigUrl[] = [];
+export interface IConfig {
+	sources: Array<{ label: string; url: string }>;
+	generators: {
+		basePath: string;
+		endpoints: string[];
+		dtos: string[];
+	};
+}
 
-	async initialize(): Promise<void> {
+export async function parseConfigFile(project: vscode.WorkspaceFolder, uri: vscode.Uri, timeOut: number): Promise<IConfigUrl> {
+	const document = await vscode.workspace.openTextDocument(uri).then(document => Promise.resolve(document));
+	let config: Partial<IConfig> = {};
+	try {
+		config = JSON.parse(document.getText());
+	} catch (err) {
+		if (err.stack) {
+			Logger.Current.Warning(err.stack.join("\r\n"));
+		}
+		Logger.Current.Error(`Error while parsing config file: ${err.message}`);
 	}
-	constructor(private workspaceFolder: vscode.WorkspaceFolder, private cfgFiles: vscode.Uri[]) {}
+
+	return {
+		projectName: project.name,
+		url: uri,
+		label: project.name,
+		projectFolder: project,
+		local: project.uri.scheme === "file",
+		config
+	};
 }

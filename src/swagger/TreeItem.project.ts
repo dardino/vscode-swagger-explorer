@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { SwaggerTreeItem } from "./TreeItem";
-import { Config } from "../config/Config";
-import { TreeItemSource } from "./TreeItem.source";
+import { TreeItemConfig } from "./TreeItem.config";
 
 export class TreeItemProject extends SwaggerTreeItem {
 	getParent(): SwaggerTreeItem | null {
@@ -21,7 +20,8 @@ export class TreeItemProject extends SwaggerTreeItem {
 	 * @memberof TreeItemProject
 	 */
 	async refreshChildren(): Promise<SwaggerTreeItem[]> {
-		const config_patterns = (this.workbenchConfig.get("configFilePattern") as string) || `**/swagger-codegen.config.json`;
+		const config_patterns = (this.workbenchConfig.get("configFilePattern") as string) || `**/swaggerexplorer.config.json`;
+		const timeOut = (this.workbenchConfig.get("httpTimeout") as number) || 20000;
 		if (!vscode.workspace.workspaceFolders) {
 			return [];
 		}
@@ -31,9 +31,10 @@ export class TreeItemProject extends SwaggerTreeItem {
 			});
 		});
 		files = files.filter(p => p.path.indexOf(this.projectFolder.uri.path) >= 0);
-		const cfg = new Config(this.projectFolder, files);
-		await cfg.initialize();
+		const cfg = files.map(f => new TreeItemConfig(this, this.projectFolder, f, timeOut));
+		await Promise.all(cfg.map(c => c.initialize()));
+		const childrenOfAllConfigs = await Promise.all(cfg.map(c => c.getChildren()));
 
-		return cfg.sources.map(f => new TreeItemSource(this, f));
+		return childrenOfAllConfigs.reduce((a, b) => a.concat(b), []);
 	}
 }

@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { SwaggerTreeItem } from "./TreeItem";
-import { Config } from "../config/Config";
-import { TreeItemProject } from "./TreeItem.Project";
+import { TreeItemProject } from "./TreeItem.project";
 export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<SwaggerTreeItem> {
 	private roots: SwaggerTreeItem[] = [];
 	private requireReload: boolean = true;

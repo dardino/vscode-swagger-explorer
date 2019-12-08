@@ -1,5 +1,5 @@
 import * as vs from "vscode";
-import chalk from "chalk";
+import * as chalk from "chalk";
 
 export class Logger {
 	static readonly INFO: "INFO" = "INFO";
