@@ -4,8 +4,16 @@ import { TreeItemCollapsibleState } from "vscode";
 import { TreeItemTag } from "./TreeItem.tag";
 import { uniq } from "lodash";
 import { extractTagsFromOperations } from "../utils/Doc";
+import * as path from "path";
 
 export class TreeItemSectionEP extends SwaggerTreeItem {
+	private myIconPath = {
+		light: path.join(__filename, "..", "..", "media", "light", "ep.svg"),
+		dark: path.join(__filename, "..", "..", "media", "dark", "ep.svg")
+	};
+	get iconPath() {
+		return this.myIconPath;
+	}
 	constructor(private parent: SwaggerTreeItem, private doc: OpenAPI.Document) {
 		super("Endpoints", TreeItemCollapsibleState.Collapsed);
 	}
