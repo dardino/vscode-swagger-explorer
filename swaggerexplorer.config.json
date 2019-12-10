@@ -1,0 +1,23 @@
+{
+	"sources": [
+		{
+			"url": "/home/dardino/Dev/GSD/openapi.json",
+			"label": "File locale OpenAPI",
+			"local": true
+		},
+		{
+			"url": "/home/dardino/Dev/GSD/swagger2.json",
+			"label": "File locale Swagger 2",
+			"local": true
+		},
+		{
+			"label": "Sample of Swagger (Pet Store)",
+			"url": "https://petstore.swagger.io/v2/swagger.json"
+		}
+	],
+	"generators": {
+		"basePath": "../swagger-codegen/dist",
+		"endpoints": ["ep/actionCreatorsGenerator", "ep/endpointGenerator"],
+		"dtos": ["dto/dtoGenerator"]
+	}
+}

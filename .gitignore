@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# non serve portarci dietro su git i js nella cartella out
+out/**/*.js
+out/**/*.map
+src/**/*.js
+src/**/*.map
