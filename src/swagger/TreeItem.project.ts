@@ -1,8 +1,21 @@
 import * as vscode from "vscode";
+import * as path from "path";
 import { SwaggerTreeItem } from "./TreeItem";
 import { TreeItemConfig } from "./TreeItem.config";
 
 export class TreeItemProject extends SwaggerTreeItem {
+	private myIconPathOpen = {
+		light: path.join(__filename, "..", "..", "media", "light", "project_open.svg"),
+		dark: path.join(__filename, "..", "..", "media", "dark", "project_open.svg")
+	};
+	private myIconPathClose = {
+		light: path.join(__filename, "..", "..", "media", "light", "project_close.svg"),
+		dark: path.join(__filename, "..", "..", "media", "dark", "project_close.svg")
+	};
+	get iconPath() {
+		return this.collapsibleState === vscode.TreeItemCollapsibleState.Collapsed ? this.myIconPathClose : this.myIconPathOpen;
+	}
+
 	getParent(): SwaggerTreeItem | null {
 		return null;
 	}
