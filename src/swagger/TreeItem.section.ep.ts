@@ -1,5 +1,5 @@
 import { SwaggerTreeItem } from "./TreeItem";
-import { OpenAPI, OpenAPIV3, OpenAPIV2 } from "openapi-types";
+import { OpenAPIV3 } from "openapi-types";
 import { TreeItemCollapsibleState } from "vscode";
 import { TreeItemTag } from "./TreeItem.tag";
 import { uniq } from "lodash";
@@ -14,7 +14,7 @@ export class TreeItemSectionEP extends SwaggerTreeItem {
 	get iconPath() {
 		return this.myIconPath;
 	}
-	constructor(private parent: SwaggerTreeItem, private doc: OpenAPI.Document) {
+	constructor(private parent: SwaggerTreeItem, private doc: OpenAPIV3.Document) {
 		super("Endpoints", TreeItemCollapsibleState.Collapsed);
 	}
 
@@ -25,7 +25,7 @@ export class TreeItemSectionEP extends SwaggerTreeItem {
 		let tagStr = uniq(extractTagsFromOperations(this.doc));
 
 		let tags =
-			(this.doc.tags || []).map<TreeItemTag>((f: OpenAPIV2.TagObject | OpenAPIV3.TagObject) => {
+			(this.doc.tags || []).map<TreeItemTag>((f: OpenAPIV3.TagObject) => {
 				const ix = tagStr.indexOf(f.name);
 				if (ix >= 0) {
 					tagStr.splice(ix, 1);
