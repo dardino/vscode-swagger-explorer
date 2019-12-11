@@ -65,3 +65,8 @@ out/**/*.js
 out/**/*.map
 src/**/*.js
 src/**/*.map
+
+
+.secrets
+
+*.vsix

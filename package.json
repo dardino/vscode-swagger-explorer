@@ -1,12 +1,16 @@
 {
 	"name": "swagger-explorer",
+	"author": {
+		"name": "ganori80"
+	},
+	"publisher": "ganori80",
 	"displayName": "Swagger Explorer",
 	"description": "Swagger explorer for Visual Studio Code",
 	"main": "./out/extension.js",
 	"module": "./out/index.js",
 	"esnext": "./out/index.js",
 	"types": "./out/index.d.ts",
-	"icon": "./out/media/icon.png",
+	"icon": "out/media/logo.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/dardino/vscode-swagger-explorer.git",
@@ -112,5 +116,10 @@
 		"tslint": "^5.20.1",
 		"typescript": "^3.7.3",
 		"vscode": "^1.1.36"
+	},
+	"__metadata": {
+		"id": "772fc9ba-e875-41a2-9469-a9d48cb9099f",
+		"publisherDisplayName": "ganori80",
+		"publisherId": "a8774ec0-d1d4-41eb-b1cc-27899e8cd577"
 	}
 }
