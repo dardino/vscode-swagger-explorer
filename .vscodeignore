@@ -7,4 +7,6 @@ vsc-extension-quickstart.md
 **/tsconfig.json
 **/tslint.json
 **/*.ts
+node_modules
 webpack.config.js
+!node_modules/http2-client

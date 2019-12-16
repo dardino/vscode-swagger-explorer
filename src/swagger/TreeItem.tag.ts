@@ -12,8 +12,8 @@ export class TreeItemTag extends TreeItemBase {
 	}
 
 	private myIconPath = {
-		light: path.join(__filename, "..", "..", "media", "light", "tag.svg"),
-		dark: path.join(__filename, "..", "..", "media", "dark", "tag.svg")
+		light: path.join(__filename, "..", "out", "media", "light", "tag.svg"),
+		dark: path.join(__filename, "..", "out", "media", "dark", "tag.svg")
 	};
 	get iconPath() {
 		return this.myIconPath;
