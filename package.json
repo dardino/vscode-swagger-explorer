@@ -16,7 +16,7 @@
 		"url": "https://github.com/dardino/vscode-swagger-explorer.git",
 		"directory": "extension"
 	},
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.40.0"
 	},
@@ -88,6 +88,11 @@
 					"type": "number",
 					"description": "Remote http call Timeout in milliseconds",
 					"default": 20000
+				},
+				"swaggerExplorer.validateSource": {
+					"type": "boolean",
+					"description": "Validate the source while parsing it",
+					"default": false
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-import { SwaggerTreeItem } from "./TreeItem";
+import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { IConfigUrl, IConfig } from "../config/Config";
 import * as vscode from "vscode";
 import { Logger } from "../utils/Logger";
@@ -9,18 +9,23 @@ import * as SwaggerParser from "swagger-parser";
 
 const converter = require("swagger2openapi");
 
-export class TreeItemSource extends SwaggerTreeItem {
-	constructor(private parent: SwaggerTreeItem, private cfgUrl: IConfigUrl, private cfg: IConfig["sources"][0]) {
+export class TreeItemSource extends TreeItemBase {
+	public get contextValue(): ContextValues {
+		return "treeItemSource";
+	}
+
+	constructor(private parent: TreeItemBase, private cfgUrl: IConfigUrl, private cfg: IConfig["sources"][0]) {
 		super(cfg.label, vscode.TreeItemCollapsibleState.Collapsed);
 	}
-	getParent(): SwaggerTreeItem | null {
+	getParent(): TreeItemBase | null {
 		return this.parent;
 	}
 
-	async refreshChildren(): Promise<SwaggerTreeItem[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		try {
 			let parser = new SwaggerParser();
-			let config = (await parser.parse(this.cfg.url)) as { swagger?: string } & OpenAPIV3.Document;
+			const vSource = this.workbenchConfig.get("validateSource") === "true";
+			let config = (await parser.parse(this.cfg.url, { validate: { schema: vSource, spec: vSource } })) as { swagger?: string } & OpenAPIV3.Document;
 			if (typeof config.swagger === "string") {
 				config = await convert(config);
 			}
@@ -44,7 +49,7 @@ export class TreeItemSource extends SwaggerTreeItem {
  */
 function convert(swagger: any): Promise<OpenAPIV3.Document> {
 	return new Promise<OpenAPIV3.Document>((resolve, reject) => {
-		let options = { };
+		let options = { patch: true, warnOnly: true };
 		//options.patch = true; // fix up small errors in the source definition
 		//options.warnOnly = true; // Do not throw on non-patchable errors
 		converter.convertObj(swagger, options, (err: any, opt: any) => {

@@ -1,9 +1,13 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { SwaggerTreeItem } from "./TreeItem";
+import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { TreeItemConfig } from "./TreeItem.config";
 
-export class TreeItemProject extends SwaggerTreeItem {
+export class TreeItemProject extends TreeItemBase {
+	public get contextValue(): ContextValues {
+		return "treeItemProject";
+	}
+
 	private myIconPathOpen = {
 		light: path.join(__filename, "..", "..", "media", "light", "project_open.svg"),
 		dark: path.join(__filename, "..", "..", "media", "dark", "project_open.svg")
@@ -16,7 +20,7 @@ export class TreeItemProject extends SwaggerTreeItem {
 		return this.collapsibleState === vscode.TreeItemCollapsibleState.Collapsed ? this.myIconPathClose : this.myIconPathOpen;
 	}
 
-	getParent(): SwaggerTreeItem | null {
+	getParent(): TreeItemBase | null {
 		return null;
 	}
 
@@ -29,10 +33,10 @@ export class TreeItemProject extends SwaggerTreeItem {
 	 * this method searches all configuration files in the current project,
 	 * then creates an instance of the Config class and return the sources as children
 	 *
-	 * @returns {Promise<SwaggerTreeItem[]>}
+	 * @returns {Promise<TreeItemBase[]>}
 	 * @memberof TreeItemProject
 	 */
-	async refreshChildren(): Promise<SwaggerTreeItem[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		const config_patterns = (this.workbenchConfig.get("configFilePattern") as string) || `**/swaggerexplorer.config.json`;
 		const timeOut = (this.workbenchConfig.get("httpTimeout") as number) || 20000;
 		if (!vscode.workspace.workspaceFolders) {
