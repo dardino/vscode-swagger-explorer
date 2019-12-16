@@ -3,8 +3,6 @@
 import * as vscode from "vscode";
 import { Logger } from "./utils/Logger";
 import { SwaggerTreeDataProvider } from "./swagger/TreeDataProvider";
-import * as path from "path";
-
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
