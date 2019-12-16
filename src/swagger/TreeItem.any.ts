@@ -1,13 +1,16 @@
 import { TreeItemCollapsibleState } from "vscode";
-import { SwaggerTreeItem } from "./TreeItem";
+import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
 
-export class TreeItemAny extends SwaggerTreeItem {
-	getParent(): SwaggerTreeItem | null {
+export class TreeItemAny extends TreeItemBase {
+	public get contextValue(): ContextValues {
+		return "treeItemAny";
+	}
+	getParent(): TreeItemBase | null {
 		return null;
 	}
 
-	async refreshChildren(): Promise<SwaggerTreeItem[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		if (
 			typeof this.object === "string" ||
 			typeof this.object === "bigint" ||

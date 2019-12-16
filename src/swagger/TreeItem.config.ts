@@ -1,9 +1,12 @@
 import * as vscode from "vscode";
-import { SwaggerTreeItem } from "./TreeItem";
+import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { IConfigUrl, parseConfigFile } from "../config/Config";
 import { TreeItemSource } from "./TreeItem.source";
 
-export class TreeItemConfig extends SwaggerTreeItem {
+export class TreeItemConfig extends TreeItemBase {
+	public get contextValue(): ContextValues {
+		return "treeItemConfig";
+	}
 	private config: IConfigUrl | null = null;
 
 	async initialize(): Promise<void> {
@@ -12,7 +15,7 @@ export class TreeItemConfig extends SwaggerTreeItem {
 	}
 
 	constructor(
-		private parent: SwaggerTreeItem,
+		private parent: TreeItemBase,
 		private projectFolder: vscode.WorkspaceFolder,
 		private uri: vscode.Uri,
 		private timeOut: number
@@ -20,11 +23,11 @@ export class TreeItemConfig extends SwaggerTreeItem {
 		super(uri, vscode.TreeItemCollapsibleState.Collapsed);
 	}
 
-	getParent(): SwaggerTreeItem {
+	getParent(): TreeItemBase {
 		return this.parent;
 	}
 
-	async refreshChildren(): Promise<SwaggerTreeItem[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		await this.initialize();
 		return this.config?.config.sources?.map(f => new TreeItemSource(this, this.config!, f)) || [];
 	}

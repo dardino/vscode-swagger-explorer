@@ -1,4 +1,4 @@
-import { SwaggerTreeItem } from "./TreeItem";
+import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
 import { TreeItemCollapsibleState } from "vscode";
 import * as path from "path";
@@ -6,7 +6,11 @@ import { uniqBy } from "lodash";
 import { toKeyValuePair, getReference } from "../utils/Doc";
 import { TreeItemPath } from "./TreeItem.path";
 
-export class TreeItemTag extends SwaggerTreeItem {
+export class TreeItemTag extends TreeItemBase {
+	public get contextValue(): ContextValues {
+		return "treeItemTag";
+	}
+
 	private myIconPath = {
 		light: path.join(__filename, "..", "..", "media", "light", "tag.svg"),
 		dark: path.join(__filename, "..", "..", "media", "dark", "tag.svg")
@@ -15,15 +19,15 @@ export class TreeItemTag extends SwaggerTreeItem {
 		return this.myIconPath;
 	}
 
-	constructor(private parent: SwaggerTreeItem, private doc: OpenAPIV3.Document, private tag: OpenAPIV3.TagObject) {
+	constructor(private parent: TreeItemBase, private doc: OpenAPIV3.Document, private tag: OpenAPIV3.TagObject) {
 		super(tag.name, TreeItemCollapsibleState.Collapsed);
 	}
 
-	getParent(): SwaggerTreeItem | null {
+	getParent(): TreeItemBase | null {
 		return this.parent;
 	}
 
-	async refreshChildren(): Promise<SwaggerTreeItem[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		let paths = toKeyValuePair<IItemPath>(this.doc.paths)
 			.map(kvp => ({
 				key: kvp.key,

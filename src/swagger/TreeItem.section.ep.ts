@@ -1,4 +1,4 @@
-import { SwaggerTreeItem } from "./TreeItem";
+import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
 import { TreeItemCollapsibleState } from "vscode";
 import { TreeItemTag } from "./TreeItem.tag";
@@ -6,7 +6,11 @@ import { uniq } from "lodash";
 import { extractTagsFromOperations } from "../utils/Doc";
 import * as path from "path";
 
-export class TreeItemSectionEP extends SwaggerTreeItem {
+export class TreeItemSectionEP extends TreeItemBase {
+	public get contextValue(): ContextValues {
+		return "treeItemSectionEndpoint";
+	}
+
 	private myIconPath = {
 		light: path.join(__filename, "..", "..", "media", "light", "ep.svg"),
 		dark: path.join(__filename, "..", "..", "media", "dark", "ep.svg")
@@ -14,14 +18,14 @@ export class TreeItemSectionEP extends SwaggerTreeItem {
 	get iconPath() {
 		return this.myIconPath;
 	}
-	constructor(private parent: SwaggerTreeItem, private doc: OpenAPIV3.Document) {
+	constructor(private parent: TreeItemBase, private doc: OpenAPIV3.Document) {
 		super("Endpoints", TreeItemCollapsibleState.Collapsed);
 	}
 
-	getParent(): SwaggerTreeItem | null {
+	getParent(): TreeItemBase | null {
 		return this.parent;
 	}
-	async refreshChildren(): Promise<SwaggerTreeItem[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		let tagStr = uniq(extractTagsFromOperations(this.doc));
 
 		let tags =

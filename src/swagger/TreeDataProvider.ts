@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
-import { SwaggerTreeItem } from "./TreeItem";
+import { TreeItemBase } from "./TreeItem.base";
 import { TreeItemProject } from "./TreeItem.project";
-export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<SwaggerTreeItem> {
-	private roots: SwaggerTreeItem[] = [];
+export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItemBase> {
+	private roots: TreeItemBase[] = [];
 	private requireReload: boolean = true;
 
 	/**
@@ -32,21 +32,21 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<SwaggerT
 	/**
 	 * the element binded to the tree (SwaggerTreeItem) is itself a vscode.TreeItem
 	 *
-	 * @param {SwaggerTreeItem} element
-	 * @returns {Promise<SwaggerTreeItem>}
+	 * @param {TreeItemBase} element
+	 * @returns {Promise<TreeItemBase>}
 	 * @memberof SwaggerTreeDataProvider
 	 */
-	async getTreeItem(element: SwaggerTreeItem): Promise<SwaggerTreeItem> {
+	async getTreeItem(element: TreeItemBase): Promise<TreeItemBase> {
 		return element;
 	}
 	/**
 	 * this method is called everytime vscode needs to retrieve the list of children of a specific TreeElement
 	 *
-	 * @param {(SwaggerTreeItem | undefined)} [element]
-	 * @returns {Promise<SwaggerTreeItem[]>}
+	 * @param {(TreeItemBase | undefined)} [element]
+	 * @returns {Promise<TreeItemBase[]>}
 	 * @memberof SwaggerTreeDataProvider
 	 */
-	async getChildren(element?: SwaggerTreeItem | undefined): Promise<SwaggerTreeItem[]> {
+	async getChildren(element?: TreeItemBase | undefined): Promise<TreeItemBase[]> {
 		if (element == null) {
 			if (this.requireReload) {
 				this.requireReload = false;
@@ -63,11 +63,10 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<SwaggerT
 	 * this method produces an Array of SwaggerTreeItem starting from loaded Configs
 	 *
 	 * @private
-	 * @returns {Promise<SwaggerTreeItem[]>}
+	 * @returns {Promise<TreeItemBase[]>}
 	 * @memberof SwaggerTreeDataProvider
 	 */
-	private async refreshRoots(): Promise<SwaggerTreeItem[]> {
+	private async refreshRoots(): Promise<TreeItemBase[]> {
 		return vscode.workspace.workspaceFolders?.map(f => new TreeItemProject(f)) || [];
 	}
-
 }
