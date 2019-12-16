@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import Axios from "axios";
 import { Logger } from "../utils/Logger";
+
 export interface IConfigUrl {
 	projectName: string;
 	url: vscode.Uri;
