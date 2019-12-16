@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { TreeItemConfig } from "./TreeItem.config";
+import { Logger } from "../utils/Logger";
 
 export class TreeItemProject extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -9,12 +10,12 @@ export class TreeItemProject extends TreeItemBase {
 	}
 
 	private myIconPathOpen = {
-		light: path.join(__filename, "..", "..", "media", "light", "project_open.svg"),
-		dark: path.join(__filename, "..", "..", "media", "dark", "project_open.svg")
+		light: path.join(__filename, "..", "out", "media", "light", "project_open.svg"),
+		dark: path.join(__filename, "..", "out", "media", "dark", "project_open.svg")
 	};
 	private myIconPathClose = {
-		light: path.join(__filename, "..", "..", "media", "light", "project_close.svg"),
-		dark: path.join(__filename, "..", "..", "media", "dark", "project_close.svg")
+		light: path.join(__filename, "..", "out", "media", "light", "project_close.svg"),
+		dark: path.join(__filename, "..", "out", "media", "dark", "project_close.svg")
 	};
 	get iconPath() {
 		return this.collapsibleState === vscode.TreeItemCollapsibleState.Collapsed ? this.myIconPathClose : this.myIconPathOpen;

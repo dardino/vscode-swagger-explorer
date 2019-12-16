@@ -11,8 +11,8 @@ export class TreeItemSectionDto extends TreeItemBase {
 	}
 
 	private myIconPath = {
-		light: path.join(__filename, "..", "..", "media", "light", "dto.svg"),
-		dark: path.join(__filename, "..", "..", "media", "dark", "dto.svg")
+		light: path.join(__filename, "..", "out", "media", "light", "dto.svg"),
+		dark: path.join(__filename, "..", "out", "media", "dark", "dto.svg")
 	};
 	get iconPath() {
 		return this.myIconPath;
