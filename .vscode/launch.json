@@ -29,7 +29,11 @@
 			"outFiles": [
 				"${workspaceFolder}/out/test/**/*.js"
 			],
+			/*
 			"preLaunchTask": "npm: watch"
+			/*/
+			"preLaunchTask": "npm: test-compile"
+			//*/
 		}
 	]
 }
