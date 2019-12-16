@@ -66,6 +66,7 @@ out/**/*.map
 src/**/*.js
 src/**/*.map
 
+dist
 
 .secrets
 

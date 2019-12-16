@@ -6,7 +6,5 @@ src/**
 vsc-extension-quickstart.md
 **/tsconfig.json
 **/tslint.json
-**/*.map
 **/*.ts
-node_modules
 webpack.config.js

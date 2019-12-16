@@ -1,5 +1,4 @@
 import * as vs from "vscode";
-import * as chalk from "chalk";
 
 export class Logger {
 	static readonly INFO: "INFO" = "INFO";
@@ -24,13 +23,12 @@ export class Logger {
 		Level: typeof Logger.INFO | typeof Logger.ERR | typeof Logger.WARN = Logger.INFO,
 		newline: boolean = false
 	) {
-		const fnColor = Level === "INFO" ? chalk.gray : Level === "WARN" ? chalk.yellow : Level === "ERR" ? chalk.red : chalk.white;
 		const msg = `${message}`;
 		try {
 			if (newline) {
-				this.outputChannel.appendLine(fnColor(msg));
+				this.outputChannel.appendLine(msg);
 			} else {
-				this.outputChannel.append(fnColor(msg));
+				this.outputChannel.append(msg);
 			}
 		} catch (err) {
 			// tslint:disable-next-line: no-console
