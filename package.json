@@ -16,7 +16,7 @@
     "url": "https://github.com/dardino/vscode-swagger-explorer.git",
     "directory": "extension"
   },
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.40.0"
   },
