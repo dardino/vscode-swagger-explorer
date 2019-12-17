@@ -4,6 +4,10 @@ All notable changes to the "swagger-explorer" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.4] - 2019-12-17
+
+- [Support for multiple config file pattern](https://github.com/dardino/vscode-swagger-explorer/pull/7)
+
 ## [0.0.2] - 2019-12-16
 
 - Added support for source validation
