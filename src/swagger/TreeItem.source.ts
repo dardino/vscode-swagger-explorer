@@ -7,7 +7,7 @@ import { TreeItemSectionEP } from "./TreeItem.section.ep";
 import { TreeItemSectionDto } from "./TreeItem.section.dto";
 import * as SwaggerParser from "swagger-parser";
 
-import converter from "swagger2openapi";
+import * as converter from "swagger2openapi";
 
 export class TreeItemSource extends TreeItemBase {
 	public get contextValue(): ContextValues {
