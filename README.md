@@ -38,7 +38,7 @@ This extension contributes the following settings:
 
 ![Settings UI screenshot](doc/settings.png)
 
-- `swaggerExplorer.configFilePattern`: pattern to find the config file in the project
+- `swaggerExplorer.configFilePattern`: pattern to find the config file in the project, now supports multiple files: `**/swaggerexplorer.config.json;**/swexp.config.json`
 - `swaggerExplorer.httpTimeout`: milliseconds to timeout http(s) calls
 - `swaggerExplorer.validateSource`: a boolean that tells parser to validate the source during parsing
 
@@ -50,7 +50,11 @@ Actually you can only browse the endpoints tree and the DTOs (schemas).
 
 ## Release Notes
 
-### 0.0.1
+### 0.0.5
+
+- Added support for multiple file patterns in Settings
+
+### 0.0.4
 
 - Swagger Explorer Tree
 
