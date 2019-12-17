@@ -48,6 +48,16 @@ This extension works with OpenAPI v3 documents and uses the `swagger2openapi` np
 
 Actually you can only browse the endpoints tree and the DTOs (schemas).
 
+## Third party libraries
+
+dependencies defined in package.json:
+
+| library          | npm                                              |
+|------------------|--------------------------------------------------|
+| lodash           | [https://www.npmjs.com/package/lodash]           |
+| swagger-parser   | [https://www.npmjs.com/package/swagger-parser]   |
+| swagger2openapi  | [https://www.npmjs.com/package/swagger2openapi]  |
+
 ## Release Notes
 
 ### 0.0.5
