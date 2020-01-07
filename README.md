@@ -1,3 +1,6 @@
+[![marketplace](https://img.shields.io/badge/vscode_marketplace-view-brightgreen)](https://marketplace.visualstudio.com/items?itemName=ganori80.swagger-explorer&ssr=false#review-details)
+[![install](https://img.shields.io/badge/vscode_marketplace-install-brightgreen)](vscode:extension/ganori80.swagger-explorer)
+
 # swagger-explorer README
 
 This is the README for "swagger-explorer" extension.
