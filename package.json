@@ -16,7 +16,7 @@
     "url": "https://github.com/dardino/vscode-swagger-explorer.git",
     "directory": "extension"
   },
-  "version": "0.0.6",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.40.0"
   },
@@ -131,7 +131,7 @@
     "typescript": "^3.7.3",
     "vscode": "^1.1.36",
     "vscode-nls-dev": "^3.3.1",
-		"webpack": "^4.41.3",
+    "webpack": "^4.41.3",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   },
