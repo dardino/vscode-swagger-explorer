@@ -16,13 +16,12 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 */
 	public async refresh(...args: any[]) {
 		this.requireReload = true;
-		Logger.Current.Info("Refreshing roots...");
 		try {
 			await CacheManager.Current.clear();
 		} catch(err) {
 			Logger.Current.Error(`Error deleting cache: ${err.message}`);
 		}
-
+		this.roots = [];
 		this.myOnDidChangeTreeData.fire();
 	}
 

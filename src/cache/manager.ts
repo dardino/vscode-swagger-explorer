@@ -65,6 +65,7 @@ export class CacheManager {
 					for (const file of files) {
 						fs.unlink(path.join(this.folder, file), err => { });
 					}
+					resolve();
 				}
 			});
 

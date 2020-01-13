@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { throws } from "assert";
 
 export type ContextValues =
 	| "treeItemSource"
@@ -10,8 +11,11 @@ export type ContextValues =
 	| "treeItemAny"
 	| "treeItemTag";
 export abstract class TreeItemBase extends vscode.TreeItem {
-	redraw() {
-
+	async redraw() {
+		if (this.needsReload) {
+			this.needsReload = false;
+			this.children = await this.refreshChildren();
+		}
 	}
 	protected workbenchConfig = vscode.workspace.getConfiguration("swaggerExplorer");
 	private children: TreeItemBase[] = [];
@@ -29,4 +33,8 @@ export abstract class TreeItemBase extends vscode.TreeItem {
 
 	abstract getParent(): TreeItemBase | null;
 	abstract refreshChildren(): Promise<TreeItemBase[]>;
+
+	forceReload() {
+		this.needsReload = true;
+	}
 }
