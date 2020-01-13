@@ -62,6 +62,10 @@ dependencies defined in package.json:
 
 ## Release Notes
 
+### 0.0.7
+
+- Swagger files are now cached
+
 ### 0.0.5
 
 - Added support for multiple file patterns in Settings
