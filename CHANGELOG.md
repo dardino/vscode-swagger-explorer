@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.7] - 2020-01-13
 
-- [Swagger json are now cached](https://github.com/dardino/vscode-swagger-explorer/pull/8)
+- [Swagger json are now cached](https://github.com/dardino/vscode-swagger-explorer/pull/14)
 
 ## [0.0.5] - 2019-12-17
 
