@@ -1,3 +1,5 @@
+[![marketplace](https://img.shields.io/badge/vscode_marketplace-view-brightgreen)](https://marketplace.visualstudio.com/items?itemName=ganori80.swagger-explorer&ssr=false#review-details)
+
 # swagger-explorer README
 
 This is the README for "swagger-explorer" extension.
@@ -47,6 +49,16 @@ This extension works with OpenAPI v3 documents and uses the `swagger2openapi` np
 ## Known Issues
 
 Actually you can only browse the endpoints tree and the DTOs (schemas).
+
+## Third party libraries
+
+dependencies defined in package.json:
+
+| library          | npm                                              |
+|------------------|--------------------------------------------------|
+| lodash           | [https://www.npmjs.com/package/lodash]           |
+| swagger-parser   | [https://www.npmjs.com/package/swagger-parser]   |
+| swagger2openapi  | [https://www.npmjs.com/package/swagger2openapi]  |
 
 ## Release Notes
 
