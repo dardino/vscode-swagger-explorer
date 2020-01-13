@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
+import { Logger } from "../utils/Logger";
 
 export class CacheManager {
 	private static instance: CacheManager;
@@ -40,6 +41,7 @@ export class CacheManager {
 				if (err) {
 					reject(err);
 				} else {
+					Logger.Current.Info("cache key read!");
 					resolve(data.toString("UTF8"));
 				}
 			});
@@ -48,9 +50,24 @@ export class CacheManager {
 
 	public exists(key: string): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
-			fs.exists(path.join(this.folder, key), (exists) => {
+			fs.exists(path.join(this.folder, key), exists => {
 				resolve(exists);
 			});
+		});
+	}
+
+	public clear(): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			fs.readdir(this.folder, (err, files) => {
+				if (err) {
+					reject(err);
+				} else {
+					for (const file of files) {
+						fs.unlink(path.join(this.folder, file), err => { });
+					}
+				}
+			});
+
 		});
 	}
 }

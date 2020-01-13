@@ -26,18 +26,22 @@ export class TreeItemSource extends TreeItemBase {
 		return this.parent;
 	}
 
-	async refreshChildren(forceReload: boolean): Promise<TreeItemBase[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		try {
-			let config = forceReload ? null : await this.getFromCache();
+			let config = await this.getFromCache();
 			if (config == null) {
+				Logger.Current.Info("Retrieving swagger file...");
 				let parser = new SwaggerParser();
 				const vSource = this.workbenchConfig.get("validateSource") === "true";
 				config = (await parser.parse(this.cfg.url, { validate: { schema: vSource, spec: vSource } })) as DocExt;
 				if (typeof config.swagger === "string") {
 					config = await convert(config);
 				}
+				await this.saveInCache(config);
+				Logger.Current.Info("Swagger file loaded!");
+			} else {
+				Logger.Current.Info("Swagger file loaded from cache!");
 			}
-			await this.saveInCache(config);
 			return [new TreeItemSectionEP(this, config), new TreeItemSectionDto(this, config)];
 		} catch (err) {
 			if (err.stack) {

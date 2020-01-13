@@ -1,10 +1,11 @@
 import * as vscode from "vscode";
 import { TreeItemBase } from "./TreeItem.base";
 import { TreeItemProject } from "./TreeItem.project";
+import { CacheManager } from "../cache/manager";
+import { Logger } from "../utils/Logger";
 export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItemBase> {
 	private roots: TreeItemBase[] = [];
 	private requireReload: boolean = true;
-	private forceReload: boolean = false;
 
 	/**
 	 * refreshes the tree item(s).
@@ -15,7 +16,13 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 */
 	public async refresh(...args: any[]) {
 		this.requireReload = true;
-		this.forceReload = true;
+		Logger.Current.Info("Refreshing roots...");
+		try {
+			await CacheManager.Current.clear();
+		} catch(err) {
+			Logger.Current.Error(`Error deleting cache: ${err.message}`);
+		}
+
 		this.myOnDidChangeTreeData.fire();
 	}
 
@@ -49,16 +56,14 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 * @memberof SwaggerTreeDataProvider
 	 */
 	async getChildren(element?: TreeItemBase | undefined): Promise<TreeItemBase[]> {
-		const force = this.forceReload;
-		this.forceReload = false;
 		if (element == null) {
-			if (this.requireReload || force) {
+			if (this.requireReload) {
 				this.requireReload = false;
 				this.roots = await this.refreshRoots();
 			}
 			return this.roots;
 		}
-		return await element.getChildren(force);
+		return await element.getChildren();
 	}
 
 	constructor(private context: vscode.ExtensionContext) {}
@@ -71,6 +76,8 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 * @memberof SwaggerTreeDataProvider
 	 */
 	private async refreshRoots(): Promise<TreeItemBase[]> {
-		return vscode.workspace.workspaceFolders?.map(f => new TreeItemProject(f)) || [];
+		const tip = vscode.workspace.workspaceFolders?.map(f => new TreeItemProject(f)) || [];
+		tip.forEach(t => t.refreshChildren());
+		return tip;
 	}
 }

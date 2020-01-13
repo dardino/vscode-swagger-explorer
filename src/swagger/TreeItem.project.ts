@@ -3,6 +3,7 @@ import * as path from "path";
 import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { TreeItemConfig } from "./TreeItem.config";
 import { uniq } from "lodash";
+import { Logger } from "../utils/Logger";
 
 export class TreeItemProject extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -27,6 +28,7 @@ export class TreeItemProject extends TreeItemBase {
 
 	constructor(private projectFolder: vscode.WorkspaceFolder) {
 		super(projectFolder.name, vscode.TreeItemCollapsibleState.Collapsed);
+		Logger.Current.Info("Created treeItem Project...");
 	}
 
 	/**
@@ -36,7 +38,7 @@ export class TreeItemProject extends TreeItemBase {
 	 * @returns {Promise<TreeItemBase[]>}
 	 * @memberof TreeItemProject
 	 */
-	async refreshChildren(forceReload: boolean): Promise<TreeItemBase[]> {
+	async refreshChildren(): Promise<TreeItemBase[]> {
 		const config_patterns = ((this.workbenchConfig.get("configFilePattern") as string) || `**/swaggerexplorer.config.json`).split(
 			";"
 		);
@@ -56,7 +58,7 @@ export class TreeItemProject extends TreeItemBase {
 		files = files.filter(p => p.path.indexOf(this.projectFolder.uri.path) >= 0);
 		const cfg = files.map(f => new TreeItemConfig(this, this.projectFolder, f, timeOut));
 		await Promise.all(cfg.map(c => c.initialize()));
-		const childrenOfAllConfigs = await Promise.all(cfg.map(c => c.getChildren(forceReload)));
+		const childrenOfAllConfigs = await Promise.all(cfg.map(c => c.getChildren()));
 
 		return childrenOfAllConfigs.reduce((a, b) => a.concat(b), []);
 	}
