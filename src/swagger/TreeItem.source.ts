@@ -8,6 +8,11 @@ import { TreeItemSectionDto } from "./TreeItem.section.dto";
 import * as SwaggerParser from "swagger-parser";
 
 import * as converter from "swagger2openapi";
+import { CacheManager } from "../cache/manager";
+
+type DocExt = {
+	swagger?: string;
+} & OpenAPIV3.Document;
 
 export class TreeItemSource extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -21,14 +26,18 @@ export class TreeItemSource extends TreeItemBase {
 		return this.parent;
 	}
 
-	async refreshChildren(): Promise<TreeItemBase[]> {
+	async refreshChildren(forceReload: boolean): Promise<TreeItemBase[]> {
 		try {
-			let parser = new SwaggerParser();
-			const vSource = this.workbenchConfig.get("validateSource") === "true";
-			let config = (await parser.parse(this.cfg.url, { validate: { schema: vSource, spec: vSource } })) as { swagger?: string } & OpenAPIV3.Document;
-			if (typeof config.swagger === "string") {
-				config = await convert(config);
+			let config = forceReload ? null : await this.getFromCache();
+			if (config == null) {
+				let parser = new SwaggerParser();
+				const vSource = this.workbenchConfig.get("validateSource") === "true";
+				config = (await parser.parse(this.cfg.url, { validate: { schema: vSource, spec: vSource } })) as DocExt;
+				if (typeof config.swagger === "string") {
+					config = await convert(config);
+				}
 			}
+			await this.saveInCache(config);
 			return [new TreeItemSectionEP(this, config), new TreeItemSectionDto(this, config)];
 		} catch (err) {
 			if (err.stack) {
@@ -38,6 +47,24 @@ export class TreeItemSource extends TreeItemBase {
 		}
 
 		return [];
+	}
+
+	private async getFromCache(): Promise<DocExt | null> {
+		const key = this.keyFromurl(this.cfg.url);
+		const cacheExists = await CacheManager.Current.exists(key);
+		if (cacheExists) {
+			return JSON.parse(await CacheManager.Current.getFromCache(key));
+		}
+		return null;
+	}
+
+	private async saveInCache(config: DocExt) {
+		const key = this.keyFromurl(this.cfg.url);
+		await CacheManager.Current.setCache(key, JSON.stringify(config));
+	}
+
+	private keyFromurl(url:string): string {
+		return url.replace(/\//g, "").replace(/:/g, "");
 	}
 }
 

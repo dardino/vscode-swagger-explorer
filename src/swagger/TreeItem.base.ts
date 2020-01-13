@@ -17,10 +17,10 @@ export abstract class TreeItemBase extends vscode.TreeItem {
 	private children: TreeItemBase[] = [];
 	private needsReload: boolean = true;
 
-	async getChildren(): Promise<TreeItemBase[]> {
-		if (this.needsReload) {
+	async getChildren(forceReload: boolean): Promise<TreeItemBase[]> {
+		if (this.needsReload || forceReload) {
 			this.needsReload = false;
-			this.children = await this.refreshChildren();
+			this.children = await this.refreshChildren(forceReload);
 		}
 		return this.children;
 	}
@@ -28,5 +28,5 @@ export abstract class TreeItemBase extends vscode.TreeItem {
 	abstract contextValue: ContextValues;
 
 	abstract getParent(): TreeItemBase | null;
-	abstract refreshChildren(): Promise<TreeItemBase[]>;
+	abstract refreshChildren(forceReload: boolean): Promise<TreeItemBase[]>;
 }

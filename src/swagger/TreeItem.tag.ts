@@ -2,7 +2,6 @@ import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
 import { TreeItemCollapsibleState } from "vscode";
 import * as path from "path";
-import { uniqBy } from "lodash";
 import { toKeyValuePair, getReference } from "../utils/Doc";
 import { TreeItemPath } from "./TreeItem.path";
 

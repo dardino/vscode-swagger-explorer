@@ -5,7 +5,7 @@
   },
   "publisher": "ganori80",
   "displayName": "Swagger Explorer",
-	"description": "Swagger explorer for Visual Studio Code",
+  "description": "Swagger explorer for Visual Studio Code",
   "main": "dist/extension.js",
   "module": "./out/index.js",
   "esnext": "./out/index.js",
@@ -131,7 +131,7 @@
     "typescript": "^3.7.3",
     "vscode": "^1.1.36",
     "vscode-nls-dev": "^3.3.1",
-    "webpack": "^4.41.3",
+		"webpack": "^4.41.3",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   },

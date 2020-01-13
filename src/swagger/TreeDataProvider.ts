@@ -4,6 +4,7 @@ import { TreeItemProject } from "./TreeItem.project";
 export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItemBase> {
 	private roots: TreeItemBase[] = [];
 	private requireReload: boolean = true;
+	private forceReload: boolean = false;
 
 	/**
 	 * refreshes the tree item(s).
@@ -14,6 +15,7 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 */
 	public async refresh(...args: any[]) {
 		this.requireReload = true;
+		this.forceReload = true;
 		this.myOnDidChangeTreeData.fire();
 	}
 
@@ -47,17 +49,19 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 * @memberof SwaggerTreeDataProvider
 	 */
 	async getChildren(element?: TreeItemBase | undefined): Promise<TreeItemBase[]> {
+		const force = this.forceReload;
+		this.forceReload = false;
 		if (element == null) {
-			if (this.requireReload) {
+			if (this.requireReload || force) {
 				this.requireReload = false;
 				this.roots = await this.refreshRoots();
 			}
 			return this.roots;
 		}
-		return await element.getChildren();
+		return await element.getChildren(force);
 	}
-	constructor(private context: vscode.ExtensionContext) {
-	}
+
+	constructor(private context: vscode.ExtensionContext) {}
 
 	/**
 	 * this method produces an Array of SwaggerTreeItem starting from loaded Configs
