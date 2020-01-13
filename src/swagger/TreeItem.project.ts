@@ -3,6 +3,7 @@ import * as path from "path";
 import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { TreeItemConfig } from "./TreeItem.config";
 import { uniq } from "lodash";
+import { Logger } from "../utils/Logger";
 
 export class TreeItemProject extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -27,6 +28,7 @@ export class TreeItemProject extends TreeItemBase {
 
 	constructor(private projectFolder: vscode.WorkspaceFolder) {
 		super(projectFolder.name, vscode.TreeItemCollapsibleState.Collapsed);
+		Logger.Current.Info("Created treeItem Project...");
 	}
 
 	/**

@@ -8,6 +8,11 @@ import { TreeItemSectionDto } from "./TreeItem.section.dto";
 import * as SwaggerParser from "swagger-parser";
 
 import * as converter from "swagger2openapi";
+import { CacheManager } from "../cache/manager";
+
+type DocExt = {
+	swagger?: string;
+} & OpenAPIV3.Document;
 
 export class TreeItemSource extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -23,11 +28,19 @@ export class TreeItemSource extends TreeItemBase {
 
 	async refreshChildren(): Promise<TreeItemBase[]> {
 		try {
-			let parser = new SwaggerParser();
-			const vSource = this.workbenchConfig.get("validateSource") === "true";
-			let config = (await parser.parse(this.cfg.url, { validate: { schema: vSource, spec: vSource } })) as { swagger?: string } & OpenAPIV3.Document;
-			if (typeof config.swagger === "string") {
-				config = await convert(config);
+			let config = await this.getFromCache();
+			if (config == null) {
+				Logger.Current.Info("Retrieving swagger file...");
+				let parser = new SwaggerParser();
+				const vSource = this.workbenchConfig.get("validateSource") === "true";
+				config = (await parser.parse(this.cfg.url, { validate: { schema: vSource, spec: vSource } })) as DocExt;
+				if (typeof config.swagger === "string") {
+					config = await convert(config);
+				}
+				await this.saveInCache(config);
+				Logger.Current.Info("Swagger file loaded!");
+			} else {
+				Logger.Current.Info("Swagger file loaded from cache!");
 			}
 			return [new TreeItemSectionEP(this, config), new TreeItemSectionDto(this, config)];
 		} catch (err) {
@@ -38,6 +51,24 @@ export class TreeItemSource extends TreeItemBase {
 		}
 
 		return [];
+	}
+
+	private async getFromCache(): Promise<DocExt | null> {
+		const key = this.keyFromurl(this.cfg.url);
+		const cacheExists = await CacheManager.Current.exists(key);
+		if (cacheExists) {
+			return JSON.parse(await CacheManager.Current.getFromCache(key));
+		}
+		return null;
+	}
+
+	private async saveInCache(config: DocExt) {
+		const key = this.keyFromurl(this.cfg.url);
+		await CacheManager.Current.setCache(key, JSON.stringify(config));
+	}
+
+	private keyFromurl(url:string): string {
+		return url.replace(/\//g, "").replace(/:/g, "");
 	}
 }
 

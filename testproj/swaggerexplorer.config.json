@@ -16,7 +16,7 @@
 		}
 	],
 	"generators": {
-		"basePath": "../swagger-codegen/dist",
+		"basePath": "./swagger-codegen/dist",
 		"endpoints": ["ep/actionCreatorsGenerator", "ep/endpointGenerator"],
 		"dtos": ["dto/dtoGenerator"]
 	}

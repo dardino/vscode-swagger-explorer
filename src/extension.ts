@@ -3,6 +3,7 @@
 import * as vscode from "vscode";
 import { Logger } from "./utils/Logger";
 import { SwaggerTreeDataProvider } from "./swagger/TreeDataProvider";
+import { CacheManager } from "./cache/manager";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -10,10 +11,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	Logger.Current.Log("Welcome to Swagger Explorer!", undefined, true);
 
+	const cache = new CacheManager(context);
+	CacheManager.SetCurrent(cache);
 	const sw = new SwaggerTreeDataProvider(context);
 	const treeView = vscode.window.createTreeView("swaggerExplorer", { treeDataProvider: sw });
 
-	treeView.message = "Swagger and OpenAPI documentation explorer";
 	treeView.onDidExpandElement(e => {
 		e.element.redraw();
 	});

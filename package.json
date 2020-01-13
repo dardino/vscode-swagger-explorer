@@ -5,7 +5,7 @@
   },
   "publisher": "ganori80",
   "displayName": "Swagger Explorer",
-	"description": "Swagger explorer for Visual Studio Code",
+  "description": "Swagger explorer for Visual Studio Code",
   "main": "dist/extension.js",
   "module": "./out/index.js",
   "esnext": "./out/index.js",
@@ -16,7 +16,7 @@
     "url": "https://github.com/dardino/vscode-swagger-explorer.git",
     "directory": "extension"
   },
-  "version": "0.0.6",
+  "version": "0.0.7",
   "engines": {
     "vscode": "^1.40.0"
   },

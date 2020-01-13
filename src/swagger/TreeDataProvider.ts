@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import { TreeItemBase } from "./TreeItem.base";
 import { TreeItemProject } from "./TreeItem.project";
+import { CacheManager } from "../cache/manager";
+import { Logger } from "../utils/Logger";
 export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItemBase> {
 	private roots: TreeItemBase[] = [];
 	private requireReload: boolean = true;
@@ -14,6 +16,12 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 */
 	public async refresh(...args: any[]) {
 		this.requireReload = true;
+		try {
+			await CacheManager.Current.clear();
+		} catch(err) {
+			Logger.Current.Error(`Error deleting cache: ${err.message}`);
+		}
+		this.roots = [];
 		this.myOnDidChangeTreeData.fire();
 	}
 
@@ -56,8 +64,8 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 		}
 		return await element.getChildren();
 	}
-	constructor(private context: vscode.ExtensionContext) {
-	}
+
+	constructor(private context: vscode.ExtensionContext) {}
 
 	/**
 	 * this method produces an Array of SwaggerTreeItem starting from loaded Configs
@@ -67,6 +75,8 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 * @memberof SwaggerTreeDataProvider
 	 */
 	private async refreshRoots(): Promise<TreeItemBase[]> {
-		return vscode.workspace.workspaceFolders?.map(f => new TreeItemProject(f)) || [];
+		const tip = vscode.workspace.workspaceFolders?.map(f => new TreeItemProject(f)) || [];
+		tip.forEach(t => t.refreshChildren());
+		return tip;
 	}
 }
