@@ -2,8 +2,12 @@
 
 # swagger-explorer README
 
-This is the README for "swagger-explorer" extension.
 This project helps you to work with Swagger API documentation in Visual Studio Code.
+
+# Contribution
+Do you like this project? Support it by donating, creating an issue or pull request.
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=PXMKQEFQFA28A&item_name=Support+developer+of+swagger+explorer+extension+for+visual+studio+code&currency_code=EUR&source=url)
 
 ## Features
 
