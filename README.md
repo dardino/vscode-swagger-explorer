@@ -1,4 +1,4 @@
-[![marketplace](https://img.shields.io/badge/vscode_marketplace-view-brightgreen)](https://marketplace.visualstudio.com/items?itemName=ganori80.swagger-explorer&ssr=false#review-details)
+[![marketplace](https://img.shields.io/badge/vscode_marketplace-view-brightgreen)](https://marketplace.visualstudio.com/items?itemName=ganori80.swagger-explorer&ssr=false)
 
 # swagger-explorer README
 
