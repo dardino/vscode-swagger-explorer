@@ -81,7 +81,6 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 			if (!(uri instanceof Array) || uri.length === 0) {
 				return;
 			}
-			console.log(uri[0]);
 			path = uri[0].path;
 		}
 		if (path == null) {
