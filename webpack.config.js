@@ -50,12 +50,12 @@ module.exports = {
 
 	plugins: [
 		new webpack.ProgressPlugin(),
-		new CopyWebpackPlugin([{
-			from: './out/**/*',
-			to: '.',
-			ignore: ['*.js', '*.js.map']
+		// new CopyWebpackPlugin([{
+		// 	from: './out/**/*',
+		// 	to: '.',
+		// 	ignore: ['*.js', '*.js.map']
 
-		}])
+		// }])
 	],
 
 	module: {

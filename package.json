@@ -7,9 +7,8 @@
 	"displayName": "Swagger Explorer",
 	"description": "Swagger explorer for Visual Studio Code",
 	"main": "out/extension.js",
-	"module": "./out/index.js",
-	"esnext": "./out/index.js",
-	"types": "./out/index.d.ts",
+	"module": "./out/extension.js",
+	"esnext": "./out/extension.js",
 	"icon": "out/media/logo.png",
 	"repository": {
 		"type": "git",
