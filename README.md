@@ -58,11 +58,13 @@ Actually you can only browse the endpoints tree and the DTOs (schemas).
 
 dependencies defined in package.json:
 
-| library          | npm                                              |
-|------------------|--------------------------------------------------|
-| lodash           | [https://www.npmjs.com/package/lodash]           |
-| swagger-parser   | [https://www.npmjs.com/package/swagger-parser]   |
-| swagger2openapi  | [https://www.npmjs.com/package/swagger2openapi]  |
+| npm library | version |
+|-------------|---------|
+| [lodash](https://www.npmjs.com/package/lodash) | 4.17.15 |
+| [swagger-parser](https://www.npmjs.com/package/swagger-parser) | 8.0.3 |
+| [swagger2openapi](https://www.npmjs.com/package/swagger2openapi) | 5.3.1 |
+| [openapi-types](https://www.npmjs.com/package/openapi-types) | 1.3.5 |
+
 
 ## Release Notes
 
