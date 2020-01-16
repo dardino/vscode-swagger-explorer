@@ -7,8 +7,9 @@ import { Logger } from "../utils/Logger";
 import { currentExtensionPath } from "../config/Config";
 
 export class TreeItemProject extends TreeItemBase {
+	private cfgFiles: TreeItemConfig[] = [];
 	public get contextValue(): ContextValues {
-		return "treeItemProject";
+		return this.cfgFiles.length === 0 ? "treeItemProject" : "treeItemProjectMulti";
 	}
 
 	private myIconPathOpen = {
@@ -25,6 +26,11 @@ export class TreeItemProject extends TreeItemBase {
 
 	getParent(): TreeItemBase | null {
 		return null;
+	}
+
+
+	get CfgFiles() {
+		return this.cfgFiles;
 	}
 
 	constructor(private projectFolder: vscode.WorkspaceFolder) {
@@ -57,10 +63,13 @@ export class TreeItemProject extends TreeItemBase {
 		);
 		let files = uniq((await Promise.all(filesP)).reduce((a, e) => a.concat(e)));
 		files = files.filter(p => p.path.indexOf(this.projectFolder.uri.path) >= 0);
-		const cfg = files.map(f => new TreeItemConfig(this, this.projectFolder, f, timeOut));
-		await Promise.all(cfg.map(c => c.initialize()));
-		const childrenOfAllConfigs = await Promise.all(cfg.map(c => c.getChildren()));
-
-		return childrenOfAllConfigs.reduce((a, b) => a.concat(b), []);
+		this.cfgFiles = files.map(f => new TreeItemConfig(this, this.projectFolder, f, timeOut));
+		if (this.cfgFiles.length === 1) {
+			await Promise.all(this.cfgFiles.map(c => c.initialize()));
+			const childrenOfAllConfigs = await Promise.all(this.cfgFiles.map(c => c.getChildren()));
+			return childrenOfAllConfigs.reduce((a, b) => a.concat(b), []);
+		} else {
+			return this.cfgFiles;
+		}
 	}
 }

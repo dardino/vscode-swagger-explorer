@@ -3,6 +3,8 @@ import { TreeItemBase } from "./TreeItem.base";
 import { TreeItemProject } from "./TreeItem.project";
 import { CacheManager } from "../cache/manager";
 import { Logger } from "../utils/Logger";
+import { TreeItemConfig } from "./TreeItem.config";
+import { TreeItemSource } from "./TreeItem.source";
 export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItemBase> {
 	private roots: TreeItemBase[] = [];
 	private requireReload: boolean = true;
@@ -18,7 +20,7 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 		this.requireReload = true;
 		try {
 			await CacheManager.Current.clear();
-		} catch(err) {
+		} catch (err) {
 			Logger.Current.Error(`Error deleting cache: ${err.message}`);
 		}
 		this.roots = [];
@@ -27,12 +29,67 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 
 	/**
 	 * add a new source in config file
-	 * @param arg0
+	 * @param args
 	 */
-	public addNewSource(...arg0: any[]) {
-		throw new Error("Method not implemented.");
-	}
+	public async addNewSource(...args: any[]) {
+		let arg0: TreeItemProject | TreeItemConfig = args[0];
+		if (!(arg0 instanceof TreeItemProject) && !(arg0 instanceof TreeItemConfig)) {
+			return;
+		}
+		let config: TreeItemConfig | undefined = undefined;
+		if (arg0 instanceof TreeItemProject) {
+			await arg0.refreshChildren();
+			if (arg0.CfgFiles.length === 1) {
+				config = arg0.CfgFiles[0];
+			} else {
+				let path = await vscode.window.showQuickPick(
+					arg0.CfgFiles.map(f => f.resourceUri?.fsPath || f.resourceUri?.path || ""),
+					{ canPickMany: false, placeHolder: "Select source file" }
+				);
+				config = arg0.CfgFiles.find(f => f.resourceUri?.fsPath || f.resourceUri?.path || "" === path);
+			}
+		} else {
+			config = arg0;
+		}
+		if (config == null) {
+			return;
+		}
 
+		let label = await vscode.window.showInputBox({
+			prompt: "Define the source label"
+		});
+		if (label == null) {
+			return;
+		}
+		let type = await vscode.window.showQuickPick(["Remote", "Local"], { placeHolder: "What is the source type?" });
+		if (type == null) {
+			return;
+		}
+		let path: string | undefined = undefined;
+		if (type === "Remote") {
+			path = await vscode.window.showInputBox({
+				prompt: "What is the " + (type === "Remote" ? "URL" : "path") + " of source?"
+			});
+		} else {
+			const uri = await vscode.window.showOpenDialog({
+				canSelectFiles: true,
+				canSelectFolders: false,
+				canSelectMany: false,
+				filters: { "swagger json": ["json"] },
+				openLabel: "Select the swagger config file"
+			});
+			if (!(uri instanceof Array) || uri.length === 0) {
+				return;
+			}
+			console.log(uri[0]);
+			path = uri[0].path;
+		}
+		if (path == null) {
+			return;
+		}
+		await config.refreshChildren();
+		await config.addToConfigFile(label, type, path);
+	}
 
 	public get onDidChangeTreeData() {
 		return this.myOnDidChangeTreeData.event;

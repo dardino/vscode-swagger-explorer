@@ -7,7 +7,7 @@ export interface IConfigUrl {
 	label: string;
 	local: boolean;
 	projectFolder?: vscode.WorkspaceFolder;
-	config: Partial<IConfig>;
+	content: Partial<IConfig>;
 }
 
 export interface IConfig {
@@ -37,11 +37,9 @@ export async function parseConfigFile(project: vscode.WorkspaceFolder, uri: vsco
 		label: project.name,
 		projectFolder: project,
 		local: project.uri.scheme === "file",
-		config
+		content: config
 	};
 }
 
 export const currentExtension = vscode.extensions.getExtension("ganori80.swagger-explorer");
 export const currentExtensionPath = currentExtension?.extensionPath || __filename;
-
-console.error(currentExtensionPath);
