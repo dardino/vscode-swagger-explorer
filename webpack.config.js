@@ -42,7 +42,7 @@ module.exports = {
 
 	output: {
 		filename: '[name].js',
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, 'out'),
 		libraryTarget: "commonjs2",
 		devtoolModuleFilenameTemplate: '../[resource-path]'
 
@@ -50,12 +50,12 @@ module.exports = {
 
 	plugins: [
 		new webpack.ProgressPlugin(),
-		new CopyWebpackPlugin([{
-			from: './out/**/*',
-			to: '.',
-			ignore: ['*.js', '*.js.map']
+		// new CopyWebpackPlugin([{
+		// 	from: './out/**/*',
+		// 	to: '.',
+		// 	ignore: ['*.js', '*.js.map']
 
-		}])
+		// }])
 	],
 
 	module: {

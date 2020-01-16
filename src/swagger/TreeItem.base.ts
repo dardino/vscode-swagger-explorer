@@ -6,6 +6,7 @@ export type ContextValues =
 	| "treeItemSectionEndpoint"
 	| "treeItemSectionDto"
 	| "treeItemProject"
+	| "treeItemProjectMulti"
 	| "treeItemPath"
 	| "treeItemConfig"
 	| "treeItemAny"

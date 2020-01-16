@@ -30,6 +30,11 @@ export function activate(context: vscode.ExtensionContext) {
 			sw.refresh(...args);
 		})
 	);
+	context.subscriptions.push(
+		vscode.commands.registerCommand("swaggerExplorer.addNew", (...args) => {
+			sw.addNewSource(...args);
+		})
+	);
 }
 
 // this method is called when your extension is deactivated
