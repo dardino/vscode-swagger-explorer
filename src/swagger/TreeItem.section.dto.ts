@@ -4,6 +4,7 @@ import { TreeItemCollapsibleState } from "vscode";
 import * as path from "path";
 import { toKeyValuePair } from "../utils/Doc";
 import { TreeItemAny } from "./TreeItem.any";
+import { currentExtensionPath } from "../config/Config";
 
 export class TreeItemSectionDto extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -11,8 +12,8 @@ export class TreeItemSectionDto extends TreeItemBase {
 	}
 
 	private myIconPath = {
-		light: path.join(__filename, "..", "out", "media", "light", "dto.svg"),
-		dark: path.join(__filename, "..", "out", "media", "dark", "dto.svg")
+		light: path.join(currentExtensionPath, "out", "media", "light", "dto.svg"),
+		dark: path.join(currentExtensionPath, "out", "media", "dark", "dto.svg")
 	};
 	get iconPath() {
 		return this.myIconPath;

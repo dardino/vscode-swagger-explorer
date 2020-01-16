@@ -6,7 +6,7 @@
   "publisher": "ganori80",
   "displayName": "Swagger Explorer",
   "description": "Swagger explorer for Visual Studio Code",
-  "main": "dist/extension.js",
+  "main": "out/extension.js",
   "module": "./out/index.js",
   "esnext": "./out/index.js",
   "types": "./out/index.d.ts",
@@ -52,7 +52,15 @@
           "light": "out/media/light/refresh.svg",
           "dark": "out/media/dark/refresh.svg"
         }
-      }
+			},
+			{
+				"command": "swaggerExplorer.addNew",
+        "title": "Add new",
+        "icon": {
+          "light": "out/media/light/plus.svg",
+          "dark": "out/media/dark/plus.svg"
+        }
+			}
     ],
     "menus": {
       "view/title": [
@@ -65,12 +73,12 @@
       "view/item/context": [
         {
           "command": "swaggerExplorer.refresh",
-          "when": "view == swaggerExplorer && viewItem == swaggerExplorerUrl",
+          "when": "view == swaggerExplorer && viewItem == treeItemSource",
           "group": "inline"
         },
         {
-          "command": "swaggerExplorer.refresh",
-          "when": "view == swaggerExplorer && viewItem == swaggerExplorerDoc || viewItem == swaggerExplorerSection",
+          "command": "swaggerExplorer.addNew",
+          "when": "view == swaggerExplorer && viewItem == treeItemProject",
           "group": "inline"
         }
       ]

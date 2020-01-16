@@ -5,6 +5,7 @@ import { TreeItemTag } from "./TreeItem.tag";
 import { uniq } from "lodash";
 import { extractTagsFromOperations } from "../utils/Doc";
 import * as path from "path";
+import { currentExtensionPath } from "../config/Config";
 
 export class TreeItemSectionEP extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -12,8 +13,8 @@ export class TreeItemSectionEP extends TreeItemBase {
 	}
 
 	private myIconPath = {
-		light: path.join(__filename, "..", "out", "media", "light", "ep.svg"),
-		dark: path.join(__filename, "..", "out", "media", "dark", "ep.svg")
+		light: path.join(currentExtensionPath, "out", "media", "light", "ep.svg"),
+		dark: path.join(currentExtensionPath, "out", "media", "dark", "ep.svg")
 	};
 	get iconPath() {
 		return this.myIconPath;

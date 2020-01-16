@@ -17,7 +17,7 @@
           "entry": "'./src/extension.ts'",
           "output": {
             "filename": "'[name].[chunkhash].js'",
-            "path": "path.resolve(__dirname, 'dist')"
+            "path": "path.resolve(__dirname, 'out')"
           },
           "plugins": [
             "new webpack.ProgressPlugin()",

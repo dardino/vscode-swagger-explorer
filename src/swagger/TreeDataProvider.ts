@@ -25,6 +25,15 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 		this.myOnDidChangeTreeData.fire();
 	}
 
+	/**
+	 * add a new source in config file
+	 * @param arg0
+	 */
+	public addNewSource(...arg0: any[]) {
+		throw new Error("Method not implemented.");
+	}
+
+
 	public get onDidChangeTreeData() {
 		return this.myOnDidChangeTreeData.event;
 	}
