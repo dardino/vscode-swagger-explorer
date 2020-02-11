@@ -2,7 +2,7 @@
 
 All notable changes to the `swagger-explorer` extension will be documented in this file.
 
-## Future
+## [0.1.0] Future
 
 * [ ] [Refresh per source](https://github.com/dardino/vscode-swagger-explorer/issues/11)
 * [ ] [Swagger JSON validation](https://github.com/dardino/vscode-swagger-explorer/issues/12)
