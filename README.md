@@ -65,8 +65,12 @@ dependencies defined in package.json:
 | [swagger2openapi](https://www.npmjs.com/package/swagger2openapi) | 5.3.1 |
 | [openapi-types](https://www.npmjs.com/package/openapi-types) | 1.3.5 |
 
-
 ## Release Notes
+
+## 0.0.8
+
+- Add new source button
+- Multiple config file in the same project now have different tree items
 
 ### 0.0.7
 
