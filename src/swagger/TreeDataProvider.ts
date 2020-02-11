@@ -4,7 +4,7 @@ import { TreeItemProject } from "./TreeItem.project";
 import { CacheManager } from "../cache/manager";
 import { Logger } from "../utils/Logger";
 import { TreeItemConfig } from "./TreeItem.config";
-import { TreeItemSource } from "./TreeItem.source";
+
 export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItemBase> {
 	private roots: TreeItemBase[] = [];
 	private requireReload: boolean = true;
@@ -36,7 +36,7 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 		if (!(arg0 instanceof TreeItemProject) && !(arg0 instanceof TreeItemConfig)) {
 			return;
 		}
-		let config: TreeItemConfig | undefined = undefined;
+		let config: TreeItemConfig | undefined;
 		if (arg0 instanceof TreeItemProject) {
 			await arg0.refreshChildren();
 			if (arg0.CfgFiles.length === 1) {
@@ -65,7 +65,7 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 		if (type == null) {
 			return;
 		}
-		let path: string | undefined = undefined;
+		let path: string | undefined;
 		if (type === "Remote") {
 			path = await vscode.window.showInputBox({
 				prompt: "What is the " + (type === "Remote" ? "URL" : "path") + " of source?"
