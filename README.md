@@ -47,6 +47,7 @@ This extension contributes the following settings:
 - `swaggerExplorer.configFilePattern`: pattern to find the config file in the project, now supports multiple files: `**/swaggerexplorer.config.json;**/swexp.config.json`
 - `swaggerExplorer.httpTimeout`: milliseconds to timeout http(s) calls
 - `swaggerExplorer.validateSource`: a boolean that tells parser to validate the source during parsing
+- `swaggerExplorer.loggerVerbosity`: sets the verbosity for the output panel logs
 
 This extension works with OpenAPI v3 documents and uses the `swagger2openapi` npm library to convert swagger v2 json into OpenAPI v3 document.
 
@@ -65,8 +66,17 @@ dependencies defined in package.json:
 | [swagger2openapi](https://www.npmjs.com/package/swagger2openapi) | 5.3.1 |
 | [openapi-types](https://www.npmjs.com/package/openapi-types) | 1.3.5 |
 
-
 ## Release Notes
+
+## 0.0.9
+
+- Configurable logger verbosity
+- Sorted tree items
+
+## 0.0.8
+
+- Add new source button
+- Multiple config file in the same project now have different tree items
 
 ### 0.0.7
 

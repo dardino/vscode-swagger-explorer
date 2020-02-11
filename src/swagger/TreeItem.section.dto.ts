@@ -5,6 +5,7 @@ import * as path from "path";
 import { toKeyValuePair } from "../utils/Doc";
 import { TreeItemAny } from "./TreeItem.any";
 import { currentExtensionPath } from "../config/Config";
+import { sortBy } from "lodash";
 
 export class TreeItemSectionDto extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -27,7 +28,7 @@ export class TreeItemSectionDto extends TreeItemBase {
 		return this.parent;
 	}
 	async refreshChildren(): Promise<TreeItemBase[]> {
-		return toKeyValuePair(this.doc.components?.schemas).map(kvp => new TreeItemAny(kvp.key, kvp.value, this.doc));
+		return sortBy(toKeyValuePair(this.doc.components?.schemas).map(kvp => new TreeItemAny(kvp.key, kvp.value, this.doc)), s => s.label);
 	}
 
 }
