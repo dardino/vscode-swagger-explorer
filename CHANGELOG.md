@@ -6,11 +6,11 @@ All notable changes to the `swagger-explorer` extension will be documented in th
 
 * [ ] [Refresh per source](https://github.com/dardino/vscode-swagger-explorer/issues/11)
 * [ ] [Swagger JSON validation](https://github.com/dardino/vscode-swagger-explorer/issues/12)
-* [ ] [Contribution for logger verbosity](https://github.com/dardino/vscode-swagger-explorer/issues/16)
 
 ## [0.0.9] March 2020
 
 * [x] [Sorting features](https://github.com/dardino/vscode-swagger-explorer/issues/17)
+* [x] [Contribution for logger verbosity](https://github.com/dardino/vscode-swagger-explorer/issues/16)
 
 ## [0.0.8] - 2020-01-16
 

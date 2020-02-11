@@ -15,7 +15,7 @@
 		"url": "https://github.com/dardino/vscode-swagger-explorer.git",
 		"directory": "extension"
 	},
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"engines": {
 		"vscode": "^1.40.0"
 	},
@@ -100,6 +100,18 @@
 					"type": "boolean",
 					"description": "Validate the source while parsing it",
 					"default": false
+				},
+				"swaggerExplorer.loggerVerbosity": {
+					"type": "number",
+					"description": "Set the logger verbosity",
+					"default": "Warning",
+					"enum": ["Error", "Warning", "Info", "Debug"],
+					"enumDescriptions": [
+						"Shows only Errors",
+						"Shows only Errors and Warnings",
+						"Shows Errors, Warnings and Info",
+						"Shows debug logs and descriptions"
+					]
 				}
 			}
 		}
