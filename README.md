@@ -67,6 +67,11 @@ dependencies defined in package.json:
 
 ## Release Notes
 
+## 0.0.9
+
+- Configurable logger verbosity
+- Sorted tree items
+
 ## 0.0.8
 
 - Add new source button
