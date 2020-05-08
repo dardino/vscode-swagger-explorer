@@ -15,7 +15,7 @@
 		"url": "https://github.com/dardino/vscode-swagger-explorer.git",
 		"directory": "extension"
 	},
-	"version": "0.0.8",
+	"version": "0.0.10",
 	"engines": {
 		"vscode": "^1.40.0"
 	},
@@ -100,6 +100,28 @@
 					"type": "boolean",
 					"description": "Validate the source while parsing it",
 					"default": false
+				},
+				"swaggerExplorer.allowInvalidCertificates": {
+					"type": "boolean",
+					"description": "Allow invalid certificates",
+					"default": false
+				},
+				"swaggerExplorer.loggerVerbosity": {
+					"type": "string",
+					"description": "Set the logger verbosity",
+					"default": "Warning",
+					"enum": [
+						"Error",
+						"Warning",
+						"Info",
+						"Debug"
+					],
+					"enumDescriptions": [
+						"Shows only Errors",
+						"Shows only Errors and Warnings",
+						"Shows Errors, Warnings and Info",
+						"Shows debug logs and descriptions"
+					]
 				}
 			}
 		}
@@ -114,28 +136,32 @@
 		"webpack-dev": "webpack --mode development --watch",
 		"test-compile": "tsc -p ./",
 		"build": "webpack",
-		"start": "webpack-dev-server"
+		"start": "webpack-dev-server",
+		"package": "yarn vsce package",
+		"vsce": "node ./node_modules/vsce/out/vsce"
 	},
 	"extensionDependencies": [],
 	"dependencies": {
-		"chalk": "^3.0.0",
+		"axios": "^0.19.2",
+		"chalk": "^4.0.0",
 		"lodash": "^4.17.15",
-		"node": "^13.3.0",
+		"node": "^14.2.0",
 		"openapi-types": "^1.3.5",
-		"swagger-parser": "^8.0.3",
-		"swagger2openapi": "^5.3.1"
+		"swagger-parser": "^9.0.1",
+		"swagger2openapi": "^6.0.3"
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.149",
-		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.12.14",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.13.5",
 		"awesome-typescript-loader": "^5.2.1",
 		"babel-plugin-syntax-dynamic-import": "^6.18.0",
 		"copy-webpack-plugin": "^5.1.1",
-		"html-webpack-plugin": "^3.2.0",
-		"ts-loader": "^6.2.1",
-		"tslint": "^5.20.1",
+		"html-webpack-plugin": "^4.3.0",
+		"ts-loader": "^7.0.3",
+		"tslint": "^6.1.2",
 		"typescript": "^3.7.3",
+		"vsce": "^1.75.0",
 		"vscode": "^1.1.36",
 		"vscode-nls-dev": "^3.3.1",
 		"webpack": "^4.41.3",

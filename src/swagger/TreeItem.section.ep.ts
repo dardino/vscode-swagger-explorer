@@ -2,7 +2,7 @@ import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
 import { TreeItemCollapsibleState } from "vscode";
 import { TreeItemTag } from "./TreeItem.tag";
-import { uniq } from "lodash";
+import { uniq, sortBy } from "lodash";
 import { extractTagsFromOperations } from "../utils/Doc";
 import * as path from "path";
 import { currentExtensionPath } from "../config/Config";
@@ -38,7 +38,7 @@ export class TreeItemSectionEP extends TreeItemBase {
 				return new TreeItemTag(this, this.doc, f);
 			}) || [];
 
-		tags = tags.concat(tagStr.map(s => new TreeItemTag(this, this.doc, { name: s, description: s })));
+		tags = sortBy(tags.concat(tagStr.map(s => new TreeItemTag(this, this.doc, { name: s, description: s }))), s => s.label);
 
 		return tags;
 	}

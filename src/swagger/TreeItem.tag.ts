@@ -5,6 +5,7 @@ import * as path from "path";
 import { toKeyValuePair, getReference } from "../utils/Doc";
 import { TreeItemPath } from "./TreeItem.path";
 import { currentExtensionPath } from "../config/Config";
+import { sortBy } from "lodash";
 
 export class TreeItemTag extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -41,7 +42,7 @@ export class TreeItemTag extends TreeItemBase {
 			.map((a, kvp) => {
 				return new TreeItemPath(this, a.key, a.value, this.tag.name, this.doc);
 			}, [] as Array<TreeItemPath>);
-		return paths;
+		return sortBy(paths, p => p.label);
 	}
 }
 

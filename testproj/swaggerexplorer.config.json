@@ -2,13 +2,11 @@
 	"sources": [
 		{
 			"url": "/home/dardino/Dev/GSD/openapi.json",
-			"label": "File locale OpenAPI",
-			"local": true
+			"label": "File locale OpenAPI"
 		},
 		{
 			"url": "/home/dardino/Dev/GSD/swagger2.json",
-			"label": "File locale Swagger 2",
-			"local": true
+			"label": "File locale Swagger 2"
 		},
 		{
 			"label": "Sample of Swagger (Pet Store)",

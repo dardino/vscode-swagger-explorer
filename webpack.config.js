@@ -1,5 +1,7 @@
-const path = require('path');
-const webpack = require('webpack');
+/* jshint esversion: 6 */
+
+const path = require("path");
+const webpack = require("webpack");
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -14,7 +16,7 @@ const webpack = require('webpack');
  *
  */
 
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -28,24 +30,23 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
  */
 
 module.exports = {
-	mode: 'production',
+	mode: "production",
 	node: {
 		__dirname: false, // leave the __dirname-behaviour intact
-		__filename: false
+		__filename: false,
 	},
 
 	entry: {
-		extension: './src/extension.ts'
+		extension: "./src/extension.ts",
 	},
 
 	target: "node",
 
 	output: {
-		filename: '[name].js',
-		path: path.resolve(__dirname, 'out'),
+		filename: "[name].js",
+		path: path.resolve(__dirname, "out"),
 		libraryTarget: "commonjs2",
-		devtoolModuleFilenameTemplate: '../[resource-path]'
-
+		devtoolModuleFilenameTemplate: "../[resource-path]",
 	},
 
 	plugins: [
@@ -59,12 +60,14 @@ module.exports = {
 	],
 
 	module: {
-		rules: [{
-			test: /.(ts|tsx)?$/,
-			loader: 'ts-loader',
-			include: [path.resolve(__dirname, 'src')],
-			exclude: [/node_modules/]
-		}]
+		rules: [
+			{
+				test: /.(ts|tsx)?$/,
+				loader: "ts-loader",
+				include: [path.resolve(__dirname, "src")],
+				exclude: [/node_modules/],
+			},
+		],
 	},
 
 	optimization: {
@@ -72,31 +75,29 @@ module.exports = {
 			cacheGroups: {
 				vendors: {
 					priority: -10,
-					test: /[\\/]node_modules[\\/]/
-				}
+					test: /[\\/]node_modules[\\/]/,
+				},
 			},
 
-			chunks: 'async',
+			chunks: "async",
 			minChunks: 1,
 			minSize: 30000,
-			name: true
-		}
+			name: true,
+		},
 	},
 
 	devServer: {
-		open: true
+		open: true,
 	},
 
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js'],
+		extensions: [".tsx", ".ts", ".js"],
 		alias: {
-			http: "http"
-		}
+			http: "http",
+		},
 	},
 	externals: {
 		vscode: "commonjs vscode",
 		"http2-client": "http2-client",
-
 	},
-
 };

@@ -5,6 +5,7 @@
 This project helps you to work with Swagger API documentation in Visual Studio Code.
 
 # Contribution
+
 Do you like this project? Support it by donating, creating an issue or pull request.
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=PXMKQEFQFA28A&item_name=Support+developer+of+swagger+explorer+extension+for+visual+studio+code&currency_code=EUR&source=url)
@@ -25,12 +26,12 @@ To start to use this extension you need to add a config file (normally `swaggere
 
 ```json
 {
-  "sources": [
-    {
-      "label": "Sample of Swagger (Pet Store)",
-      "url": "https://petstore.swagger.io/v2/swagger.json"
-    }
-  ]
+	"sources": [
+		{
+			"label": "Sample of Swagger (Pet Store)",
+			"url": "https://petstore.swagger.io/v2/swagger.json"
+		}
+	]
 }
 ```
 
@@ -47,6 +48,8 @@ This extension contributes the following settings:
 - `swaggerExplorer.configFilePattern`: pattern to find the config file in the project, now supports multiple files: `**/swaggerexplorer.config.json;**/swexp.config.json`
 - `swaggerExplorer.httpTimeout`: milliseconds to timeout http(s) calls
 - `swaggerExplorer.validateSource`: a boolean that tells parser to validate the source during parsing
+- `swaggerExplorer.allowInvalidCertificates`: a boolean that allow unsecure https urls. ***WARNING! use it at your own risk***
+- `swaggerExplorer.loggerVerbosity`: sets the verbosity for the output panel logs
 
 This extension works with OpenAPI v3 documents and uses the `swagger2openapi` npm library to convert swagger v2 json into OpenAPI v3 document.
 
@@ -58,15 +61,32 @@ Actually you can only browse the endpoints tree and the DTOs (schemas).
 
 dependencies defined in package.json:
 
-| npm library | version |
-|-------------|---------|
-| [lodash](https://www.npmjs.com/package/lodash) | 4.17.15 |
-| [swagger-parser](https://www.npmjs.com/package/swagger-parser) | 8.0.3 |
-| [swagger2openapi](https://www.npmjs.com/package/swagger2openapi) | 5.3.1 |
-| [openapi-types](https://www.npmjs.com/package/openapi-types) | 1.3.5 |
-
+| npm library                                                      | version |
+| ---------------------------------------------------------------- | ------- |
+| [axios](https://www.npmjs.com/package/axios)                     | 0.19.2  |
+| [chalk](https://www.npmjs.com/package/chalk)                     | 4.0.0   |
+| [lodash](https://www.npmjs.com/package/lodash)                   | 4.17.15 |
+| [node](https://www.npmjs.com/package/node)                       | 14.2.0  |
+| [openapi-types](https://www.npmjs.com/package/openapi-types)     | 1.3.5   |
+| [swagger-parser](https://www.npmjs.com/package/swagger-parser)   | 9.0.1   |
+| [swagger2openapi](https://www.npmjs.com/package/swagger2openapi) | 6.0.3   |
 
 ## Release Notes
+
+## 0.0.10
+
+- Added config to allow invalid certificates for remote json through https
+- Fixed logger verbosity
+
+## 0.0.9
+
+- Configurable logger verbosity
+- Sorted tree items
+
+## 0.0.8
+
+- Add new source button
+- Multiple config file in the same project now have different tree items
 
 ### 0.0.7
 
