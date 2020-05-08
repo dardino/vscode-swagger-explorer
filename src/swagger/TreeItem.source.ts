@@ -6,8 +6,9 @@ import { OpenAPIV3 } from "openapi-types";
 import { TreeItemSectionEP } from "./TreeItem.section.ep";
 import { TreeItemSectionDto } from "./TreeItem.section.dto";
 import * as SwaggerParser from "swagger-parser";
-
 import * as converter from "swagger2openapi";
+import axios from "axios";
+import * as https from "https";
 import { CacheManager } from "../cache/manager";
 
 type DocExt = {
@@ -32,8 +33,15 @@ export class TreeItemSource extends TreeItemBase {
 			if (config == null) {
 				Logger.Current.Info("Retrieving swagger file...");
 				let parser = new SwaggerParser();
-				const vSource = this.workbenchConfig.get("validateSource") === "true";
-				config = (await parser.parse(this.cfg.url, { validate: { schema: vSource, spec: vSource } })) as DocExt;
+				const allowInvalidCertificates = this.workbenchConfig.get<boolean>("allowInvalidCertificates");
+				const validateSource = this.workbenchConfig.get<boolean>("validateSource");
+				const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
+				if (this.cfg.url.substr(0, 4) === "http") {
+					const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
+					config = (await parser.parse(doc.data, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
+				} else {
+					config = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
+				}
 				if (typeof config.swagger === "string") {
 					config = await convert(config);
 				}
@@ -67,7 +75,7 @@ export class TreeItemSource extends TreeItemBase {
 		await CacheManager.Current.setCache(key, JSON.stringify(config));
 	}
 
-	private keyFromurl(url:string): string {
+	private keyFromurl(url: string): string {
 		return url.replace(/\//g, "").replace(/:/g, "");
 	}
 }
