@@ -8,9 +8,9 @@ function toNumber(value: cfgLogValues): number {
 }
 
 export class Logger {
-	static readonly INFO: typeof configValues[0] = configValues[0];
+	static readonly ERR: typeof configValues[0] = configValues[0];
 	static readonly WARN: typeof configValues[1] = configValues[1];
-	static readonly ERR: typeof configValues[2] = configValues[2];
+	static readonly INFO: typeof configValues[2] = configValues[2];
 	static readonly DEBUG: typeof configValues[3] = configValues[3];
 
 	private static loggerInstance: Logger;
@@ -30,7 +30,7 @@ export class Logger {
 	Log(message: string, Level: cfgLogValues, newline: boolean = false) {
 		const msg = `${message}`;
 		const verbosity = vs.workspace.getConfiguration("swaggerExplorer").get<cfgLogValues>("loggerVerbosity") ?? "Warning";
-		if (toNumber(verbosity) < toNumber(Level)) {
+		if (toNumber(Level) > toNumber(verbosity)) {
 			console.log(msg);
 			return;
 		}
