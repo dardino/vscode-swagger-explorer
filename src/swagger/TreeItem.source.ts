@@ -27,11 +27,9 @@ export class TreeItemSource extends TreeItemBase {
 		return this.parent;
 	}
 
-	async getFileContent() {
+	async getFileContentFromRemote() {
 		let parser = new SwaggerParser();
 		const validateSource = this.workbenchConfig.get<boolean>("validateSource");
-		const allowInvalidCertificates = this.workbenchConfig.get<boolean>("allowInvalidCertificates");
-		const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
 		let content: OpenAPIV3.Document<{}> | null = null;
 		let error: Error | null = null;
 		try {
@@ -43,9 +41,11 @@ export class TreeItemSource extends TreeItemBase {
 		if(!content) {
 			// if fails try to get with axios
 			try {
+				const allowInvalidCertificates = this.workbenchConfig.get<boolean>("allowInvalidCertificates");
+				const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
 				const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
 				Logger.Current.Info("> file swagger downloaded, parsing...");
-				return (await parser.parse(doc.data, { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
+				return (await parser.parse(JSON.parse(doc.data), { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
 			} catch(err) {
 				error = error ?? err as Error;
 			}
@@ -59,7 +59,7 @@ export class TreeItemSource extends TreeItemBase {
 			let config = await this.getFromCache();
 			if (config == null) {
 				Logger.Current.Info("Retrieving swagger file...");
-				config = await this.getFileContent();
+				config = await this.getFileContentFromRemote();
 				if (typeof config.swagger === "string") {
 					config = await convert(config);
 				}
