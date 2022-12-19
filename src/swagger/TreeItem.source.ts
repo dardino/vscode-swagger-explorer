@@ -27,7 +27,8 @@ export class TreeItemSource extends TreeItemBase {
 		return this.parent;
 	}
 
-	async getFileContent(parser: SwaggerParser) {
+	async getFileContent() {
+		let parser = new SwaggerParser();
 		const validateSource = this.workbenchConfig.get<boolean>("validateSource");
 		const allowInvalidCertificates = this.workbenchConfig.get<boolean>("allowInvalidCertificates");
 		const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
@@ -58,16 +59,7 @@ export class TreeItemSource extends TreeItemBase {
 			let config = await this.getFromCache();
 			if (config == null) {
 				Logger.Current.Info("Retrieving swagger file...");
-				let parser = new SwaggerParser();
-
-				config = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
-				// if (this.cfg.url.slice(0, 4) === "http") {
-				// 	const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
-				// 	Logger.Current.Info("> file swagger downloaded, parsing...");
-				// 	config = (await parser.parse(doc.data, { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
-				// } else {
-				// 	config = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
-				// }
+				config = await this.getFileContent();
 				if (typeof config.swagger === "string") {
 					config = await convert(config);
 				}
