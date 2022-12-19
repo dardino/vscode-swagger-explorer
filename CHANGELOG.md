@@ -7,6 +7,10 @@ All notable changes to the `swagger-explorer` extension will be documented in th
 * [ ] [Refresh per source](https://github.com/dardino/vscode-swagger-explorer/issues/11)
 * [ ] [Swagger JSON validation](https://github.com/dardino/vscode-swagger-explorer/issues/12)
 
+## [0.0.11] December 2022
+
+* [x] Updates some libraries
+
 ## [0.0.9] March 2020
 
 * [x] [Sorting features](https://github.com/dardino/vscode-swagger-explorer/issues/17)
