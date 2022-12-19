@@ -72,6 +72,10 @@ dependencies defined in package.json:
 
 ## Release Notes
 
+## 0.0.11
+
+- Updated some dependencies
+
 ## 0.0.10
 
 - Added config to allow invalid certificates for remote json through https
