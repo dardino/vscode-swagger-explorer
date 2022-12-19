@@ -21,10 +21,10 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 		try {
 			await CacheManager.Current.clear();
 		} catch (err) {
-			Logger.Current.Error(`Error deleting cache: ${err.message}`);
+			Logger.Current.Error(`Error deleting cache: ${(err as Error).message}`);
 		}
 		this.roots = [];
-		this.myOnDidChangeTreeData.fire();
+		this.myOnDidChangeTreeData.fire(undefined);
 	}
 
 	/**
@@ -97,10 +97,10 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 * event emitter to trigger a tree update
 	 *
 	 * @private
-	 * @type {vscode.EventEmitter<undefined>}
+	 * @type {vscode.EventEmitter<void>}
 	 * @memberof SwaggerTreeDataProvider
 	 */
-	private myOnDidChangeTreeData: vscode.EventEmitter<undefined> = new vscode.EventEmitter<undefined>();
+	private myOnDidChangeTreeData: vscode.EventEmitter<void> = new vscode.EventEmitter<void>();
 
 	/**
 	 * the element binded to the tree (SwaggerTreeItem) is itself a vscode.TreeItem

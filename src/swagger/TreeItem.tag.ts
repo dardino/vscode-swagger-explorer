@@ -16,9 +16,8 @@ export class TreeItemTag extends TreeItemBase {
 		light: path.join(currentExtensionPath, "out", "media", "light", "tag.svg"),
 		dark: path.join(currentExtensionPath, "out", "media", "dark", "tag.svg")
 	};
-	get iconPath() {
-		return this.myIconPath;
-	}
+
+	readonly iconPath = this.myIconPath;
 
 	constructor(private parent: TreeItemBase, private doc: OpenAPIV3.Document, private tag: OpenAPIV3.TagObject) {
 		super(tag.name, TreeItemCollapsibleState.Collapsed);

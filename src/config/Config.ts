@@ -25,10 +25,11 @@ export async function parseConfigFile(project: vscode.WorkspaceFolder, uri: vsco
 	try {
 		config = JSON.parse(document.getText());
 	} catch (err) {
-		if (err.stack) {
-			Logger.Current.Warning(err.stack.join("\r\n"));
+		const { stack, message } = err as Error;
+		if (stack) {
+			Logger.Current.Warning(stack);
 		}
-		Logger.Current.Error(`Error while parsing config file: ${err.message}`);
+		Logger.Current.Error(`Error while parsing config file: ${message}`);
 	}
 
 	return {

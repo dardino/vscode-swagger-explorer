@@ -20,14 +20,12 @@ export class TreeItemProject extends TreeItemBase {
 		light: path.join(currentExtensionPath, "out", "media", "light", "project_close.svg"),
 		dark: path.join(currentExtensionPath, "out", "media", "dark", "project_close.svg")
 	};
-	get iconPath() {
-		return this.collapsibleState === vscode.TreeItemCollapsibleState.Collapsed ? this.myIconPathClose : this.myIconPathOpen;
-	}
+
+	iconPath = this.myIconPathClose;
 
 	getParent(): TreeItemBase | null {
 		return null;
 	}
-
 
 	get CfgFiles() {
 		return this.cfgFiles;

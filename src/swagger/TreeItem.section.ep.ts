@@ -16,9 +16,9 @@ export class TreeItemSectionEP extends TreeItemBase {
 		light: path.join(currentExtensionPath, "out", "media", "light", "ep.svg"),
 		dark: path.join(currentExtensionPath, "out", "media", "dark", "ep.svg")
 	};
-	get iconPath() {
-		return this.myIconPath;
-	}
+
+	readonly iconPath = this.myIconPath;
+
 	constructor(private parent: TreeItemBase, private doc: OpenAPIV3.Document) {
 		super("Endpoints", TreeItemCollapsibleState.Collapsed);
 	}

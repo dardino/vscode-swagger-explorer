@@ -16,9 +16,8 @@ export class TreeItemSectionDto extends TreeItemBase {
 		light: path.join(currentExtensionPath, "out", "media", "light", "dto.svg"),
 		dark: path.join(currentExtensionPath, "out", "media", "dark", "dto.svg")
 	};
-	get iconPath() {
-		return this.myIconPath;
-	}
+
+	readonly iconPath = this.myIconPath;
 
 	constructor(private parent: TreeItemBase, private doc: OpenAPIV3.Document) {
 		super("DTOs", TreeItemCollapsibleState.Collapsed);

@@ -3,13 +3,14 @@ import { OpenAPIV3 } from "openapi-types";
 export function extractTagsFromOperations(doc: OpenAPIV3.Document): string[] {
 	const items = Object.keys(doc.paths).map(k => doc.paths[k]);
 	const ops = items.reduce(
-		(a, p) =>
-			a.concat(
-				Object.keys(p)
+		(a, prop) => {
+			if (!prop) return a;
+			return a.concat(
+				Object.keys(prop)
 					.filter(k => !["$ref", "parameters", "summary", "description", "servers"].includes(k))
-					.map(k => (p as any)[k])
-			),
-		[] as any[]
+					.map(k => (prop as any)[k])
+			)
+		},[] as any[]
 	) as OpenAPIV3.OperationObject[];
 
 	const tagsstr = ops.reduce((a, o: OpenAPIV3.OperationObject) => a.concat(o.tags || []), [] as string[]);

@@ -75,6 +75,7 @@ module.exports = {
 			cacheGroups: {
 				vendors: {
 					priority: -10,
+					name: "vendors",
 					test: /[\\/]node_modules[\\/]/,
 				},
 			},
@@ -82,7 +83,7 @@ module.exports = {
 			chunks: "async",
 			minChunks: 1,
 			minSize: 30000,
-			name: true,
+			name: "vendors",
 		},
 	},
 

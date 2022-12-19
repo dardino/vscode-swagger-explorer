@@ -27,21 +27,47 @@ export class TreeItemSource extends TreeItemBase {
 		return this.parent;
 	}
 
+	async getFileContent(parser: SwaggerParser) {
+		const validateSource = this.workbenchConfig.get<boolean>("validateSource");
+		const allowInvalidCertificates = this.workbenchConfig.get<boolean>("allowInvalidCertificates");
+		const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
+		let content: OpenAPIV3.Document<{}> | null = null;
+		let error: Error | null = null;
+		try {
+			// try to read directly from file
+			content = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
+		} catch(err) {
+			error = err as Error;
+		}
+		if(!content) {
+			// if fails try to get with axios
+			try {
+				const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
+				Logger.Current.Info("> file swagger downloaded, parsing...");
+				return (await parser.parse(doc.data, { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
+			} catch(err) {
+				error = error ?? err as Error;
+			}
+		}
+		if (content == null) throw error;
+		return content;
+	}
+
 	async refreshChildren(): Promise<TreeItemBase[]> {
 		try {
 			let config = await this.getFromCache();
 			if (config == null) {
 				Logger.Current.Info("Retrieving swagger file...");
 				let parser = new SwaggerParser();
-				const allowInvalidCertificates = this.workbenchConfig.get<boolean>("allowInvalidCertificates");
-				const validateSource = this.workbenchConfig.get<boolean>("validateSource");
-				const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
-				if (this.cfg.url.substr(0, 4) === "http") {
-					const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
-					config = (await parser.parse(doc.data, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
-				} else {
-					config = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
-				}
+
+				config = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
+				// if (this.cfg.url.slice(0, 4) === "http") {
+				// 	const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
+				// 	Logger.Current.Info("> file swagger downloaded, parsing...");
+				// 	config = (await parser.parse(doc.data, { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
+				// } else {
+				// 	config = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
+				// }
 				if (typeof config.swagger === "string") {
 					config = await convert(config);
 				}
@@ -52,10 +78,9 @@ export class TreeItemSource extends TreeItemBase {
 			}
 			return [new TreeItemSectionEP(this, config), new TreeItemSectionDto(this, config)];
 		} catch (err) {
-			if (err.stack) {
-				Logger.Current.Warning(err.stack);
-			}
-			Logger.Current.Error(`Error while parsing API file: ${err.message}`);
+			const {stack, message} = (err as Error);
+			if (stack)  Logger.Current.Warning(stack);
+			Logger.Current.Error(`Error while parsing API file: ${message}`);
 		}
 
 		return [];

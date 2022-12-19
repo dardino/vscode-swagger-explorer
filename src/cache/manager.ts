@@ -42,7 +42,7 @@ export class CacheManager {
 					reject(err);
 				} else {
 					Logger.Current.Info("cache key read!");
-					resolve(data.toString("UTF8"));
+					resolve(data.toString("utf8"));
 				}
 			});
 		});
