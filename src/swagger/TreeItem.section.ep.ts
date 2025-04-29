@@ -1,11 +1,11 @@
-import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
-import { TreeItemCollapsibleState } from "vscode";
-import { TreeItemTag } from "./TreeItem.tag";
-import { uniq, sortBy } from "lodash";
-import { extractTagsFromOperations } from "../utils/Doc";
 import * as path from "path";
+import { TreeItemCollapsibleState, Uri } from "vscode";
 import { currentExtensionPath } from "../config/Config";
+import { sortBy } from "../utils/Array";
+import { extractTagsFromOperations } from "../utils/Doc";
+import { ContextValues, TreeItemBase } from "./TreeItem.base";
+import { TreeItemTag } from "./TreeItem.tag";
 
 export class TreeItemSectionEP extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -13,8 +13,8 @@ export class TreeItemSectionEP extends TreeItemBase {
 	}
 
 	private myIconPath = {
-		light: path.join(currentExtensionPath, "out", "media", "light", "ep.svg"),
-		dark: path.join(currentExtensionPath, "out", "media", "dark", "ep.svg")
+		light: Uri.file(path.join(currentExtensionPath, "out", "media", "light", "ep.svg")),
+		dark : Uri.file(path.join(currentExtensionPath, "out", "media", "dark", "ep.svg"))
 	};
 
 	readonly iconPath = this.myIconPath;
@@ -27,7 +27,7 @@ export class TreeItemSectionEP extends TreeItemBase {
 		return this.parent;
 	}
 	async refreshChildren(): Promise<TreeItemBase[]> {
-		let tagStr = uniq(extractTagsFromOperations(this.doc));
+		let tagStr = Array.from(new Set(extractTagsFromOperations(this.doc)));
 
 		let tags =
 			(this.doc.tags || []).map<TreeItemTag>((f: OpenAPIV3.TagObject) => {

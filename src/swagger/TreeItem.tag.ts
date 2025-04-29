@@ -1,11 +1,11 @@
-import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
-import { TreeItemCollapsibleState } from "vscode";
 import * as path from "path";
-import { toKeyValuePair, getReference } from "../utils/Doc";
-import { TreeItemPath } from "./TreeItem.path";
+import { TreeItemCollapsibleState, Uri } from "vscode";
 import { currentExtensionPath } from "../config/Config";
-import { sortBy } from "lodash";
+import { sortBy } from "../utils/Array";
+import { getReference, toKeyValuePair } from "../utils/Doc";
+import { ContextValues, TreeItemBase } from "./TreeItem.base";
+import { TreeItemPath } from "./TreeItem.path";
 
 export class TreeItemTag extends TreeItemBase {
 	public get contextValue(): ContextValues {
@@ -13,8 +13,8 @@ export class TreeItemTag extends TreeItemBase {
 	}
 
 	private myIconPath = {
-		light: path.join(currentExtensionPath, "out", "media", "light", "tag.svg"),
-		dark: path.join(currentExtensionPath, "out", "media", "dark", "tag.svg")
+		light: Uri.file(path.join(currentExtensionPath, "out", "media", "light", "tag.svg")),
+		dark : Uri.file(path.join(currentExtensionPath, "out", "media", "dark", "tag.svg"))
 	};
 
 	readonly iconPath = this.myIconPath;

@@ -1,10 +1,9 @@
-import * as vscode from "vscode";
 import * as path from "path";
-import { TreeItemBase, ContextValues } from "./TreeItem.base";
-import { TreeItemConfig } from "./TreeItem.config";
-import { uniq } from "lodash";
-import { Logger } from "../utils/Logger";
+import * as vscode from "vscode";
 import { currentExtensionPath } from "../config/Config";
+import { Logger } from "../utils/Logger";
+import { ContextValues, TreeItemBase } from "./TreeItem.base";
+import { TreeItemConfig } from "./TreeItem.config";
 
 export class TreeItemProject extends TreeItemBase {
 	private cfgFiles: TreeItemConfig[] = [];
@@ -13,12 +12,12 @@ export class TreeItemProject extends TreeItemBase {
 	}
 
 	private myIconPathOpen = {
-		light: path.join(currentExtensionPath, "out", "media", "light", "project_open.svg"),
-		dark: path.join(currentExtensionPath, "out", "media", "dark", "project_open.svg")
+		light: vscode.Uri.file(path.join(currentExtensionPath, "out", "media", "light", "project_open.svg")),
+		dark: vscode.Uri.file(path.join(currentExtensionPath, "out", "media", "dark", "project_open.svg"))
 	};
 	private myIconPathClose = {
-		light: path.join(currentExtensionPath, "out", "media", "light", "project_close.svg"),
-		dark: path.join(currentExtensionPath, "out", "media", "dark", "project_close.svg")
+		light: vscode.Uri.file(path.join(currentExtensionPath, "out", "media", "light", "project_close.svg")),
+		dark: vscode.Uri.file(path.join(currentExtensionPath, "out", "media", "dark", "project_close.svg"))
 	};
 
 	iconPath = this.myIconPathClose;
@@ -59,7 +58,7 @@ export class TreeItemProject extends TreeItemBase {
 					});
 				})
 		);
-		let files = uniq((await Promise.all(filesP)).reduce((a, e) => a.concat(e)));
+		let files = (await Promise.all(filesP)).reduce((a, e) => a.concat(e));
 		files = files.filter(p => p.path.indexOf(this.projectFolder.uri.path) >= 0);
 		this.cfgFiles = files.map(f => new TreeItemConfig(this, this.projectFolder, f, timeOut));
 		if (this.cfgFiles.length === 1) {

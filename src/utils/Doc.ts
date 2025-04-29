@@ -4,12 +4,12 @@ export function extractTagsFromOperations(doc: OpenAPIV3.Document): string[] {
 	const items = Object.keys(doc.paths).map(k => doc.paths[k]);
 	const ops = items.reduce(
 		(a, prop) => {
-			if (!prop) return a;
+			if (!prop) {return a;}
 			return a.concat(
 				Object.keys(prop)
 					.filter(k => !["$ref", "parameters", "summary", "description", "servers"].includes(k))
 					.map(k => (prop as any)[k])
-			)
+			);
 		},[] as any[]
 	) as OpenAPIV3.OperationObject[];
 

@@ -1,15 +1,16 @@
-import { TreeItemBase, ContextValues } from "./TreeItem.base";
-import { IConfigUrl, IConfig } from "../config/Config";
-import * as vscode from "vscode";
-import { Logger } from "../utils/Logger";
-import { OpenAPIV3 } from "openapi-types";
-import { TreeItemSectionEP } from "./TreeItem.section.ep";
-import { TreeItemSectionDto } from "./TreeItem.section.dto";
-import * as SwaggerParser from "swagger-parser";
-import * as converter from "swagger2openapi";
+import SwaggerParser from '@apidevtools/swagger-parser';
 import axios from "axios";
 import * as https from "https";
+import { OpenAPIV3 } from "openapi-types";
+import { dirname, join } from "path";
+import * as converter from "swagger2openapi";
+import * as vscode from "vscode";
 import { CacheManager } from "../cache/manager";
+import { IConfig, IConfigUrl } from "../config/Config";
+import { Logger } from "../utils/Logger";
+import { ContextValues, TreeItemBase } from "./TreeItem.base";
+import { TreeItemSectionDto } from "./TreeItem.section.dto";
+import { TreeItemSectionEP } from "./TreeItem.section.ep";
 
 type DocExt = {
 	swagger?: string;
@@ -28,13 +29,18 @@ export class TreeItemSource extends TreeItemBase {
 	}
 
 	async getFileContentFromRemote() {
-		let parser = new SwaggerParser();
 		const validateSource = this.workbenchConfig.get<boolean>("validateSource");
 		let content: OpenAPIV3.Document<{}> | null = null;
 		let error: Error | null = null;
 		try {
 			// try to read directly from file
-			content = (await parser.parse(this.cfg.url, { validate: { schema: validateSource, spec: validateSource } })) as DocExt;
+			const uriFile = vscode.Uri.parse(join(dirname(this.cfgUrl.url.toString() ?? "/"), this.cfg.url));
+			Logger.Current.Info("> reading file <" + uriFile + "> ...");
+			const contentString = (await vscode.workspace.fs.readFile(uriFile)).toString();
+			Logger.Current.Info("> parsing... ");
+			const parsed = await SwaggerParser.parse(JSON.parse(contentString), { validate: { schema: validateSource, spec: validateSource } });
+			Logger.Current.Info("> file parsed! ");
+			content = parsed as DocExt;
 		} catch(err) {
 			error = err as Error;
 		}
@@ -45,12 +51,14 @@ export class TreeItemSource extends TreeItemBase {
 				const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
 				const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
 				Logger.Current.Info("> file swagger downloaded, parsing...");
-				return (await parser.parse(JSON.parse(doc.data), { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
+				return (await SwaggerParser.parse(JSON.parse(doc.data), { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
 			} catch(err) {
 				error = error ?? err as Error;
 			}
 		}
-		if (content == null) throw error;
+		if (content == null) {
+			throw error;
+		}
 		return content;
 	}
 
@@ -71,7 +79,9 @@ export class TreeItemSource extends TreeItemBase {
 			return [new TreeItemSectionEP(this, config), new TreeItemSectionDto(this, config)];
 		} catch (err) {
 			const {stack, message} = (err as Error);
-			if (stack)  Logger.Current.Warning(stack);
+			if (stack) {
+				Logger.Current.Warning(stack);
+			}
 			Logger.Current.Error(`Error while parsing API file: ${message}`);
 		}
 
@@ -82,7 +92,19 @@ export class TreeItemSource extends TreeItemBase {
 		const key = this.keyFromurl(this.cfg.url);
 		const cacheExists = await CacheManager.Current.exists(key);
 		if (cacheExists) {
-			return JSON.parse(await CacheManager.Current.getFromCache(key));
+			const cacheValue = await CacheManager.Current.getFromCache(key);
+			if (!cacheValue) {
+				return null;
+			}
+			try {
+				return JSON.parse(cacheValue);
+			} catch (err) {
+				const {stack, message} = (err as Error);
+				if (stack) {
+					Logger.Current.Warning(stack);
+				}
+				Logger.Current.Error(`Error while parsing API file: ${message}`);
+			}
 		}
 		return null;
 	}
