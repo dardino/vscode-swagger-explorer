@@ -1,6 +1,6 @@
-import { TreeItemCollapsibleState } from "vscode";
-import { TreeItemBase, ContextValues } from "./TreeItem.base";
 import { OpenAPIV3 } from "openapi-types";
+import { TreeItemCollapsibleState } from "vscode";
+import { ContextValues, TreeItemBase } from "./TreeItem.base";
 
 export class TreeItemAny extends TreeItemBase {
 	public get contextValue(): ContextValues {
