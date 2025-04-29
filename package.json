@@ -5,12 +5,6 @@
 	},
 	"publisher": "ganori80",
 	"displayName": "Swagger Explorer",
-	"name": "swagger-explorer",
-	"author": {
-		"name": "ganori80"
-	},
-	"publisher": "ganori80",
-	"displayName": "Swagger Explorer",
 	"description": "Swagger explorer for Visual Studio Code",
 	"main": "out/extension.js",
 	"module": "./out/extension.js",
@@ -43,7 +37,8 @@
 			"swaggerExplorerContainer": [
 				{
 					"id": "swaggerExplorer",
-					"name": "Swagger Explorer"
+					"name": "Swagger Explorer",
+					"icon": "out/media/logo.svg"
 				}
 			]
 		},
