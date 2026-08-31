@@ -1,5 +1,7 @@
 # Welcome to your VS Code Extension
 
+URL In marketplace: https://marketplace.visualstudio.com/manage/publishers/ganori80
+
 ## What's in the folder
 
 * This folder contains all of the files necessary for your extension.

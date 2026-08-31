@@ -6,7 +6,7 @@ All notable changes to the `swagger-explorer` extension will be documented in th
 
 * [ ] [Swagger JSON validation](https://github.com/dardino/vscode-swagger-explorer/issues/12)
 
-## [0.2.0] August 2026
+## [0.3.0] August 2026
 
 * [x] [Refresh per source](https://github.com/dardino/vscode-swagger-explorer/issues/11)
 
