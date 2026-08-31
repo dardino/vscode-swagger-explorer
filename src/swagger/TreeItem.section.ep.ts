@@ -27,7 +27,7 @@ export class TreeItemSectionEP extends TreeItemBase {
 		return this.parent;
 	}
 	async refreshChildren(): Promise<TreeItemBase[]> {
-		let tagStr = Array.from(new Set(extractTagsFromOperations(this.doc)));
+		const tagStr = Array.from(new Set(extractTagsFromOperations(this.doc)));
 
 		let tags =
 			(this.doc.tags || []).map<TreeItemTag>((f: OpenAPIV3.TagObject) => {

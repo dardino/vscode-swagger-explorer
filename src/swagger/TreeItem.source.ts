@@ -1,5 +1,4 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
-import axios from "axios";
 import * as https from "https";
 import { OpenAPIV3 } from "openapi-types";
 import { dirname, join } from "path";
@@ -30,30 +29,44 @@ export class TreeItemSource extends TreeItemBase {
 
 	async getFileContentFromRemote() {
 		const validateSource = this.workbenchConfig.get<boolean>("validateSource");
-		let content: OpenAPIV3.Document<{}> | null = null;
+		let content: OpenAPIV3.Document<object> | null = null;
 		let error: Error | null = null;
+		const isRemote = this.cfg.url.startsWith("http://") || this.cfg.url.startsWith("https://");
 		try {
-			// try to read directly from file
-			const uriFile = vscode.Uri.parse(join(dirname(this.cfgUrl.url.toString() ?? "/"), this.cfg.url));
-			Logger.Current.Info("> reading file <" + uriFile + "> ...");
-			const contentString = (await vscode.workspace.fs.readFile(uriFile)).toString();
-			Logger.Current.Info("> parsing... ");
-			const parsed = await SwaggerParser.parse(JSON.parse(contentString), { validate: { schema: validateSource, spec: validateSource } });
-			Logger.Current.Info("> file parsed! ");
-			content = parsed as DocExt;
-		} catch(err) {
-			error = err as Error;
-		}
-		if(!content) {
-			// if fails try to get with axios
-			try {
+			if (!isRemote) {
+				// try to read directly from file
+				const uriFile = vscode.Uri.parse(join(dirname(this.cfgUrl.url.toString() ?? "/"), this.cfg.url));
+				Logger.Current.Info("> reading file <" + uriFile + "> ...");
+				const contentString = (await vscode.workspace.fs.readFile(uriFile)).toString();
+				Logger.Current.Info("> parsing... ");
+				const parsed = await SwaggerParser.parse(JSON.parse(contentString), { validate: { schema: validateSource, spec: validateSource } });
+				Logger.Current.Info("> file parsed! ");
+				content = parsed as DocExt;
+			} else {
 				const allowInvalidCertificates = this.workbenchConfig.get<boolean>("allowInvalidCertificates");
 				const agent = new https.Agent({ rejectUnauthorized: allowInvalidCertificates });
-				const doc = await axios.get<string>(this.cfg.url, { responseType: "text", httpsAgent: agent });
+				const doc = await new Promise<{ data: string }>((resolve, reject) => {
+					https.get(this.cfg.url, { agent }, (res) => {
+						let data = "";
+						res.on("data", (chunk) => {
+							data += chunk;
+						});
+						res.on("end", () => {
+							resolve({ data });
+						});
+					}).on("error", (err) => {
+						reject(err);
+					});
+				});
 				Logger.Current.Info("> file swagger downloaded, parsing...");
-				return (await SwaggerParser.parse(JSON.parse(doc.data), { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
-			} catch(err) {
-				error = error ?? err as Error;
+				const parsed = (await SwaggerParser.parse(JSON.parse(doc.data), { validate: { schema: validateSource, spec: validateSource }})) as DocExt;
+				content = parsed;
+			}
+		} catch(err) {
+			Logger.Current.Error(`> error reading file: ${(err as Error).message}`);
+			error = err as Error;
+			if (error.stack) {
+				Logger.Current.Warning(error.stack);
 			}
 		}
 		if (content == null) {
@@ -127,7 +140,7 @@ export class TreeItemSource extends TreeItemBase {
  */
 function convert(swagger: any): Promise<OpenAPIV3.Document> {
 	return new Promise<OpenAPIV3.Document>((resolve, reject) => {
-		let options = { patch: true, warnOnly: true };
+		const options = { patch: true, warnOnly: true };
 		//options.patch = true; // fix up small errors in the source definition
 		//options.warnOnly = true; // Do not throw on non-patchable errors
 		converter.convertObj(swagger, options, (err: any, opt: any) => {

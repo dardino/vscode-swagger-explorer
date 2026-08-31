@@ -1,4 +1,3 @@
-/* eslint-disable eqeqeq */
 export function sortBy<T>(array: T[], f: (a: T) => T[keyof T]): T[] {
 	return array.sort((a, b) => {
 		const valueOfA = f(a);

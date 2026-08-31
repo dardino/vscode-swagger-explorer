@@ -28,7 +28,7 @@ export class TreeItemTag extends TreeItemBase {
 	}
 
 	async refreshChildren(): Promise<TreeItemBase[]> {
-		let paths = toKeyValuePair<IItemPath>(this.doc.paths)
+		const paths = toKeyValuePair<IItemPath>(this.doc.paths)
 			.map(kvp => ({
 				key: kvp.key,
 				value: getReference<OpenAPIV3.PathItemObject>(kvp.value, this.doc)
@@ -38,7 +38,7 @@ export class TreeItemTag extends TreeItemBase {
 					(a.value[f as keyof OpenAPIV3.PathItemObject] as OpenAPIV3.OperationObject).tags?.includes(this.tag.name)
 				)
 			)
-			.map((a, kvp) => {
+			.map((a) => {
 				return new TreeItemPath(this, a.key, a.value, this.tag.name, this.doc);
 			}, [] as Array<TreeItemPath>);
 		return sortBy(paths, p => p.label);

@@ -15,9 +15,9 @@
 		"url": "https://github.com/dardino/vscode-swagger-explorer.git",
 		"directory": "extension"
 	},
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"engines": {
-		"vscode": "^1.99.0"
+		"vscode": "^1.134.0"
 	},
 	"categories": [
 		"Other"
@@ -140,17 +140,20 @@
 		"test": "vscode-test"
 	},
 	"devDependencies": {
+		"@eslint/js": "^10.0.1",
 		"@types/mocha": "^10.0.10",
-		"@types/node": "20.x",
-		"@types/vscode": "^1.99.0",
-		"@typescript-eslint/eslint-plugin": "^8.28.0",
-		"@typescript-eslint/parser": "^8.28.0",
-		"@vscode/test-cli": "^0.0.10",
-		"@vscode/test-electron": "^2.4.1",
-		"esbuild": "^0.25.1",
-		"eslint": "^9.23.0",
+		"@types/node": "^26.4.0",
+		"@types/vscode": "^1.134.0",
+		"@vscode/test-cli": "^0.0.15",
+		"@vscode/test-electron": "^3.1.0",
+		"esbuild": "^0.28.2",
+		"eslint": "^10.9.1",
+		"globals": "^17.11.0",
+		"jiti": "^2.7.0",
+		"mocha": "^11.8.0",
 		"npm-run-all": "^4.1.5",
-		"typescript": "^5.8.2"
+		"typescript": "^6.0.0",
+		"typescript-eslint": "^8.68.0"
 	},
 	"__metadata": {
 		"id": "772fc9ba-e875-41a2-9469-a9d48cb9099f",
@@ -158,9 +161,11 @@
 		"publisherId": "a8774ec0-d1d4-41eb-b1cc-27899e8cd577"
 	},
 	"dependencies": {
-		"@apidevtools/swagger-parser": "^10.1.1",
-		"axios": "^1.12.0",
+		"@apidevtools/swagger-parser": "^12.1.0",
 		"openapi-types": "^12.1.3",
 		"swagger2openapi": "^7.0.8"
+	},
+	"allowScripts": {
+		"esbuild@0.28.2": true
 	}
 }

@@ -50,9 +50,9 @@ export class TreeItemProject extends TreeItemBase {
 		if (!vscode.workspace.workspaceFolders) {
 			return [];
 		}
-		let filesP = config_patterns.map(
+		const filesP = config_patterns.map(
 			config_pattern =>
-				new Promise<vscode.Uri[]>((resolve, reject) => {
+				new Promise<vscode.Uri[]>((resolve) => {
 					vscode.workspace.findFiles(config_pattern, `**/node_modules/**`).then(f => {
 						resolve(f);
 					});

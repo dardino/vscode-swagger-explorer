@@ -64,7 +64,7 @@ export class CacheManager {
 	}
 
 	public exists(key: string): Promise<boolean> {
-		return new Promise<boolean>((resolve, reject) => {
+		return new Promise<boolean>((resolve) => {
 			if (!this.folder) {
 				return resolve(false);
 			}
@@ -84,7 +84,7 @@ export class CacheManager {
 					reject(err);
 				} else {
 					for (const file of files) {
-						fs.unlink(path.join(this.folder!, file), err => { });
+						fs.unlink(path.join(this.folder!, file), () => { });
 					}
 					resolve();
 				}

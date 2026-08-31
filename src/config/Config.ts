@@ -20,7 +20,14 @@ export interface IConfig {
 }
 
 export async function parseConfigFile(project: vscode.WorkspaceFolder, uri: vscode.Uri, timeOut: number): Promise<IConfigUrl> {
-	const document = await vscode.workspace.openTextDocument(uri).then(document => Promise.resolve(document));
+	const document = await new Promise<vscode.TextDocument>((resolve, reject) => {
+		const timeout = setTimeout(() => reject(new Error("Timeout")), timeOut);
+		vscode.workspace.openTextDocument(uri)
+			.then((data) => {
+				clearTimeout(timeout);
+				resolve(data);
+			}, reject);
+	});
 	let config: Partial<IConfig> = {};
 	try {
 		config = JSON.parse(document.getText());

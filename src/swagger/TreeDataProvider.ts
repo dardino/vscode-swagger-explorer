@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
-import { TreeItemBase } from "./TreeItem.base";
-import { TreeItemProject } from "./TreeItem.project";
 import { CacheManager } from "../cache/manager";
 import { Logger } from "../utils/Logger";
+import { TreeItemBase } from "./TreeItem.base";
 import { TreeItemConfig } from "./TreeItem.config";
+import { TreeItemProject } from "./TreeItem.project";
 
 export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItemBase> {
 	private roots: TreeItemBase[] = [];
@@ -17,6 +17,8 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 * @memberof SwaggerTreeDataProvider
 	 */
 	public async refresh(...args: any[]) {
+		Logger.Current.Info("Refreshing tree...");
+		args.forEach(arg => Logger.Current.Info(`. arg: ${arg}`));
 		this.requireReload = true;
 		try {
 			await CacheManager.Current.clear();
@@ -32,7 +34,7 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 	 * @param args
 	 */
 	public async addNewSource(...args: any[]) {
-		let arg0: TreeItemProject | TreeItemConfig = args[0];
+		const arg0: TreeItemProject | TreeItemConfig = args[0];
 		if (!(arg0 instanceof TreeItemProject) && !(arg0 instanceof TreeItemConfig)) {
 			return;
 		}
@@ -42,7 +44,7 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 			if (arg0.CfgFiles.length === 1) {
 				config = arg0.CfgFiles[0];
 			} else {
-				let path = await vscode.window.showQuickPick(
+				const path = await vscode.window.showQuickPick(
 					arg0.CfgFiles.map(f => f.resourceUri?.fsPath || f.resourceUri?.path || ""),
 					{ canPickMany: false, placeHolder: "Select source file" }
 				);
@@ -55,13 +57,13 @@ export class SwaggerTreeDataProvider implements vscode.TreeDataProvider<TreeItem
 			return;
 		}
 
-		let label = await vscode.window.showInputBox({
+		const label = await vscode.window.showInputBox({
 			prompt: "Define the source label"
 		});
 		if (label == null) {
 			return;
 		}
-		let type = await vscode.window.showQuickPick(["Remote", "Local"], { placeHolder: "What is the source type?" });
+		const type = await vscode.window.showQuickPick(["Remote", "Local"], { placeHolder: "What is the source type?" });
 		if (type == null) {
 			return;
 		}

@@ -1,10 +1,10 @@
-[![marketplace](https://img.shields.io/badge/vscode_marketplace-view-brightgreen)](https://marketplace.visualstudio.com/items?itemName=ganori80.swagger-explorer&ssr=false)
-
 # swagger-explorer README
+
+[![marketplace](https://img.shields.io/badge/vscode_marketplace-view-brightgreen)](https://marketplace.visualstudio.com/items?itemName=ganori80.swagger-explorer&ssr=false)
 
 This project helps you to work with Swagger API documentation in Visual Studio Code.
 
-# Contribution
+## Contribution
 
 Do you like this project? Support it by donating, creating an issue or pull request.
 
@@ -26,12 +26,12 @@ To start to use this extension you need to add a config file (normally `swaggere
 
 ```json
 {
-	"sources": [
-		{
-			"label": "Sample of Swagger (Pet Store)",
-			"url": "https://petstore.swagger.io/v2/swagger.json"
-		}
-	]
+  "sources": [
+    {
+      "label": "Sample of Swagger (Pet Store)",
+      "url": "https://petstore.swagger.io/v2/swagger.json"
+    }
+  ]
 }
 ```
 
@@ -61,16 +61,21 @@ Actually you can only browse the endpoints tree and the DTOs (schemas).
 
 dependencies defined in package.json:
 
-| npm library                                                      | version  |
-| ---------------------------------------------------------------- | -------- |
-| [axios](https://www.npmjs.com/package/axios)                     | ^1.2.1   |
-| [chalk](https://www.npmjs.com/package/chalk)                     | ^4.0.0   |
-| [lodash](https://www.npmjs.com/package/lodash)                   | ^4.17.21 |
-| [openapi-types](https://www.npmjs.com/package/openapi-types)     | ^12.1.0  |
-| [swagger-parser](https://www.npmjs.com/package/swagger-parser)   | ^10.0.3  |
-| [swagger2openapi](https://www.npmjs.com/package/swagger2openapi) | ^7.0.8   |
+| npm library                                                      | version   |
+|------------------------------------------------------------------|-----------|
+| `@apidevtools/swagger-parser`                                    | `^12.1.0` |
+| `openapi-types`                                                  | `^12.1.3` |
+| `swagger2openapi`                                                | `^7.0.8`  |
 
 ## Release Notes
+
+## 0.2.0
+
+- Some fixes loading remote files
+
+## 0.1.0
+
+- Updated some dependencies
 
 ## 0.0.11
 

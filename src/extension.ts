@@ -1,9 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { Logger } from "./utils/Logger";
-import { SwaggerTreeDataProvider } from "./swagger/TreeDataProvider";
 import { CacheManager } from "./cache/manager";
+import { SwaggerTreeDataProvider } from "./swagger/TreeDataProvider";
+import { Logger } from "./utils/Logger";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -18,6 +18,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 	treeView.onDidExpandElement(e => {
 		e.element.redraw();
+		setTimeout(() => {
+			try {
+				sw.refresh();
+			} catch (err) {
+				Logger.Current.Error(`Error refreshing tree: ${(err as Error).message}`);
+			}
+		}, 100);
 	});
 
 	context.subscriptions.push(treeView);

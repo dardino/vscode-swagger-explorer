@@ -42,6 +42,7 @@ export class Logger {
 				this.outputChannel.append(msg);
 			}
 		} catch (err) {
+			console.error(`Error writing to output channel:`, err);
 			// tslint:disable-next-line: no-console
 			console.error(message);
 		}

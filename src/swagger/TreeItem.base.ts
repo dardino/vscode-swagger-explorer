@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { throws } from "assert";
 
 export type ContextValues =
 	| "treeItemSource"
